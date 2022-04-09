@@ -1,3 +1,6 @@
 <resources>
     <string name="app_name">BusTime3</string>
+    <string name="fav_page_1_title">Favourites</string>
+    <string name="search_page_2_title">Search</string>
+    <string name="nearby_page_3_title">Nearby</string>
 </resources>
