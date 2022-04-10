@@ -15,6 +15,7 @@
         android:background="@color/dark_purple"
         app:itemIconSize="20dp"
         app:itemIconTint="@color/white"
+        app:itemRippleColor="@color/light_purple"
         app:itemTextColor="@color/white"
 
         app:layout_constraintBottom_toBottomOf="parent"
