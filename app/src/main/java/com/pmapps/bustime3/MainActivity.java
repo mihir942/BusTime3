@@ -7,6 +7,7 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.util.Log;
@@ -48,7 +49,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void askPermissions(ActivityResultLauncher<String[]> mLauncher) {
-        if (!permissionsGranted()) {
+        if (!permissionsGranted(this)) {
             Log.d("PERMISSIONS", "Launching multiple contract permission launcher for ALL required permissions");
             mLauncher.launch(ALL_PERMISSIONS);
         } else {
@@ -70,9 +71,9 @@ public class MainActivity extends AppCompatActivity {
         return true;
     };
 
-    private boolean permissionsGranted() {
+    private boolean permissionsGranted(Context context) {
         for (String perm: ALL_PERMISSIONS) {
-            if (ContextCompat.checkSelfPermission(this, perm) != PackageManager.PERMISSION_GRANTED) {
+            if (ContextCompat.checkSelfPermission(context, perm) != PackageManager.PERMISSION_GRANTED) {
                 Log.d("PERMISSIONS", "Permission is not granted: " + perm);
                 return false;
             }
