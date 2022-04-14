@@ -25,6 +25,8 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 public class NearbyFragment extends Fragment implements OnMapReadyCallback {
 
+    final float DEFAULT_ZOOM_LEVEL = 17.0F;
+
     private Context mContext;
     private GoogleMap mMap;
     private FusedLocationProviderClient client;
@@ -66,7 +68,7 @@ public class NearbyFragment extends Fragment implements OnMapReadyCallback {
 
             LatLng home = new LatLng(latitude,longitude);
             mMap.addMarker(new MarkerOptions().position(home).title("Home"));
-            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(home,17.0F));
+            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(home,DEFAULT_ZOOM_LEVEL));
         });
     }
 }
