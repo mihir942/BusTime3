@@ -4,6 +4,7 @@ import static com.google.android.gms.location.LocationRequest.PRIORITY_HIGH_ACCU
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.location.Location;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -40,7 +41,7 @@ public class NearbyFragment extends Fragment implements OnMapReadyCallback {
     @Override
     public void onMapReady(@NonNull GoogleMap googleMap) {
         mMap = googleMap;
-        getLocation();
+        getLocationAndFetchNearby();
     }
 
     @Override
@@ -58,17 +59,22 @@ public class NearbyFragment extends Fragment implements OnMapReadyCallback {
 
 
     @SuppressLint("MissingPermission")
-    private void getLocation() {
+    private void getLocationAndFetchNearby() {
         client.getCurrentLocation(PRIORITY_HIGH_ACCURACY, null).addOnSuccessListener(location -> {
 
-            double latitude = location.getLatitude();
-            double longitude = location.getLongitude();
-            Log.d("LOCATION","LAT: " + latitude);
-            Log.d("LOCATION","LON: " + longitude);
-
-            LatLng home = new LatLng(latitude,longitude);
-            mMap.addMarker(new MarkerOptions().position(home).title("Home"));
-            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(home,DEFAULT_ZOOM_LEVEL));
+            LatLng currentLocation = locToLatLng(location);
+            mMap.addMarker(new MarkerOptions().position(currentLocation).title("You"));
+            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(currentLocation,DEFAULT_ZOOM_LEVEL));
+            fetchBusStops();
         });
+    }
+
+    private void fetchBusStops() {
+        
+    }
+
+    // Helper method
+    private LatLng locToLatLng(Location location) {
+        return new LatLng(location.getLatitude(), location.getLongitude());
     }
 }
