@@ -3,4 +3,7 @@
     <string name="fav_page_1_title">Favourites</string>
     <string name="search_page_2_title">Search</string>
     <string name="nearby_page_3_title">Nearby</string>
+    <string name="bus_stop_name_placeholder">Bus Stop Name</string>
+    <string name="bus_stop_road_placeholder">Bus Stop Road</string>
+    <string name="bus_stop_code_placeholder">Bus Stop Code</string>
 </resources>

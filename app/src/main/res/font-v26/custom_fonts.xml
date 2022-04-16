@@ -5,4 +5,14 @@
         android:fontWeight="500"
         android:font="@font/circularstd_black_regular"
         />
+    <font
+        android:fontStyle="normal"
+        android:fontWeight="300"
+        android:font="@font/circularstd_medium_regular"
+        />
+    <font
+        android:fontStyle="normal"
+        android:fontWeight="100"
+        android:font="@font/circularstd_light_regular"
+        />
 </font-family>
