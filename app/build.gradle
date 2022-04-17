@@ -6,6 +6,9 @@ plugins {
 android {
     compileSdk 31
 
+    def localProperties = new Properties()
+    localProperties.load(new FileInputStream(rootProject.file("local.properties")))
+
     defaultConfig {
         applicationId "com.pmapps.bustime3"
         minSdk 24
@@ -17,6 +20,9 @@ android {
     }
 
     buildTypes {
+        debug {
+            resValue("string","TIH_API_KEY",localProperties.getProperty("TIH_API_KEY"))
+        }
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
