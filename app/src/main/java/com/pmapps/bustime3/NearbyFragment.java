@@ -4,15 +4,18 @@ import static com.google.android.gms.location.LocationRequest.PRIORITY_HIGH_ACCU
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,6 +29,8 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptor;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
@@ -135,15 +140,15 @@ public class NearbyFragment extends Fragment implements OnMapReadyCallback {
                     //create an instance of BusStopItem, and add it to the list
                     BusStopItem busStopItem = new BusStopItem(bus_stop_name,bus_stop_road,bus_stop_code,bus_stop_coord);
                     busStopItemList.add(busStopItem);
-
-                    //TODO: remove log
-                    Log.d("BUS2", bus_stop_name + ": " + bus_stop_lat + ", " + bus_stop_lon);
                 }
                 // all bus stop items have been added at this point
                 // now pass this big chunk of data to the adapter, let it do its job.
                 // but we can't exactly initialise adapter here; it's already initialised.
                 // so we notify it that the data set has changed
                 busStopAdapter.notifyDataSetChanged();
+
+                // google maps - add all the markers
+                mMap.addMarker(new MarkerOptions().position(new LatLng(1.3270524352831348, 103.90292634985121)).icon(bitmapDescriptorFromVector(mContext,R.drawable.ic_bus_icon)).title("test bus stop"));
 
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -160,5 +165,21 @@ public class NearbyFragment extends Fragment implements OnMapReadyCallback {
     // Helper method #2
     private String TIH_API_KEY() {
         return getResources().getString(R.string.TIH_API_KEY);
+    }
+
+    // Helper method #3
+    private BitmapDescriptor bitmapDescriptorFromVector(Context context, int vectorResId) {
+        Drawable vectorDrawable = ContextCompat.getDrawable(context,vectorResId);
+
+        int width, height;
+        if (vectorDrawable != null) {
+            width = vectorDrawable.getIntrinsicWidth();
+            height = vectorDrawable.getIntrinsicHeight();
+            vectorDrawable.setBounds(0,0,width,height);
+            Bitmap bitmap = Bitmap.createBitmap(width,height, Bitmap.Config.ARGB_8888);
+            vectorDrawable.draw(new Canvas(bitmap));
+            return BitmapDescriptorFactory.fromBitmap(bitmap);
+        }
+        return null;
     }
 }
