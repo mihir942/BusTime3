@@ -44,7 +44,7 @@ import java.util.List;
 public class NearbyFragment extends Fragment implements OnMapReadyCallback {
 
     // map variables
-    private final static float DEFAULT_ZOOM_LEVEL = 17.0F;
+    private final static float DEFAULT_ZOOM_LEVEL = 16.0F;
     private Context mContext;
     private GoogleMap mMap;
     private FusedLocationProviderClient client;
@@ -140,15 +140,14 @@ public class NearbyFragment extends Fragment implements OnMapReadyCallback {
                     //create an instance of BusStopItem, and add it to the list
                     BusStopItem busStopItem = new BusStopItem(bus_stop_name,bus_stop_road,bus_stop_code,bus_stop_coord);
                     busStopItemList.add(busStopItem);
+                    MarkerOptions markerOptions = new MarkerOptions().title(bus_stop_name).icon(bitmapDescriptorFromVector(mContext,R.drawable.ic_bus_icon)).position(bus_stop_coord));
+                    mMap.addMarker(markerOptions);
                 }
                 // all bus stop items have been added at this point
                 // now pass this big chunk of data to the adapter, let it do its job.
                 // but we can't exactly initialise adapter here; it's already initialised.
                 // so we notify it that the data set has changed
                 busStopAdapter.notifyDataSetChanged();
-
-                // google maps - add all the markers
-                mMap.addMarker(new MarkerOptions().position(new LatLng(1.3270524352831348, 103.90292634985121)).icon(bitmapDescriptorFromVector(mContext,R.drawable.ic_bus_icon)).title("test bus stop"));
 
             } catch (JSONException e) {
                 e.printStackTrace();
