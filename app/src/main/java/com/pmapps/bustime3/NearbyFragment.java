@@ -140,7 +140,7 @@ public class NearbyFragment extends Fragment implements OnMapReadyCallback {
                     //create an instance of BusStopItem, and add it to the list
                     BusStopItem busStopItem = new BusStopItem(bus_stop_name,bus_stop_road,bus_stop_code,bus_stop_coord);
                     busStopItemList.add(busStopItem);
-                    MarkerOptions markerOptions = new MarkerOptions().title(bus_stop_name).icon(bitmapDescriptorFromVector(mContext,R.drawable.ic_bus_icon)).position(bus_stop_coord));
+                    MarkerOptions markerOptions = new MarkerOptions().title(bus_stop_name).icon(bitmapDescriptorFromVector(mContext,R.drawable.ic_bus_icon)).position(bus_stop_coord);
                     mMap.addMarker(markerOptions);
                 }
                 // all bus stop items have been added at this point
