@@ -33,6 +33,7 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import org.json.JSONArray;
@@ -42,7 +43,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-public class NearbyFragment extends Fragment implements OnMapReadyCallback {
+public class NearbyFragment extends Fragment implements OnMapReadyCallback, GoogleMap.OnInfoWindowClickListener {
 
     // map variables
     private final static float DEFAULT_ZOOM_LEVEL = 16.0F;
@@ -75,6 +76,7 @@ public class NearbyFragment extends Fragment implements OnMapReadyCallback {
     @Override
     public void onMapReady(@NonNull GoogleMap googleMap) {
         mMap = googleMap;
+        mMap.setOnInfoWindowClickListener(this);
         getLocationAndFetchNearby();
     }
 
@@ -96,15 +98,9 @@ public class NearbyFragment extends Fragment implements OnMapReadyCallback {
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(mContext));
         busStopItemList = new ArrayList<>();
-        busStopAdapter = new BusStopAdapter(mContext, busStopItemList, new BusStopAdapter.OnBusStopClickListener() {
-            @Override
-            public void onBusStopClicked(BusStopItem busStopItem) {
-                Log.d("CLICKED","Stop clicked: " + busStopItem.getBusStopName() + ": " + busStopItem.getBusStopCode());
-            }
-        });
+        busStopAdapter = new BusStopAdapter(mContext, busStopItemList, busStopItem -> Log.d("CLICKED","Stop clicked: " + busStopItem.getBusStopName() + ": " + busStopItem.getBusStopCode()));
         recyclerView.setAdapter(busStopAdapter);
     }
-
 
     // figure out current location of the user. based on this, fetch the surrounding bus stops.
     @SuppressLint("MissingPermission")
@@ -147,7 +143,7 @@ public class NearbyFragment extends Fragment implements OnMapReadyCallback {
                     BusStopItem busStopItem = new BusStopItem(bus_stop_name,bus_stop_road,bus_stop_code,bus_stop_coord);
                     busStopItemList.add(busStopItem);
                     MarkerOptions markerOptions = new MarkerOptions().title(bus_stop_name).icon(bitmapDescriptorFromVector(mContext,R.drawable.ic_bus_icon)).position(bus_stop_coord);
-                    mMap.addMarker(markerOptions);
+                    mMap.addMarker(markerOptions).setTag(bus_stop_name);
                 }
                 // all bus stop items have been added at this point
                 // now pass this big chunk of data to the adapter, let it do its job.
@@ -160,6 +156,12 @@ public class NearbyFragment extends Fragment implements OnMapReadyCallback {
             }
         }, Throwable::printStackTrace);
         requestQueue.add(request);
+    }
+
+    @Override
+    public void onInfoWindowClick(@NonNull Marker marker) {
+        String tag = String.valueOf(marker.getTag());
+        Log.d("TAG","Bus Stop: " + tag);
     }
 
     // Helper method #1
@@ -187,4 +189,6 @@ public class NearbyFragment extends Fragment implements OnMapReadyCallback {
         }
         return null;
     }
+
+
 }
