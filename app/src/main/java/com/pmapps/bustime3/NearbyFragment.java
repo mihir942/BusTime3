@@ -16,6 +16,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -95,7 +96,12 @@ public class NearbyFragment extends Fragment implements OnMapReadyCallback {
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(mContext));
         busStopItemList = new ArrayList<>();
-        busStopAdapter = new BusStopAdapter(mContext, busStopItemList);
+        busStopAdapter = new BusStopAdapter(mContext, busStopItemList, new BusStopAdapter.OnBusStopClickListener() {
+            @Override
+            public void onBusStopClicked(BusStopItem busStopItem) {
+                Log.d("CLICKED","Stop clicked: " + busStopItem.getBusStopName() + ": " + busStopItem.getBusStopCode());
+            }
+        });
         recyclerView.setAdapter(busStopAdapter);
     }
 

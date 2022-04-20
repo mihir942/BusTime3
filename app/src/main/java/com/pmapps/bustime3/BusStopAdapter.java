@@ -13,13 +13,15 @@ import java.util.List;
 
 public class BusStopAdapter extends RecyclerView.Adapter<BusStopAdapter.BusStopViewHolder> {
 
-    LayoutInflater inflater;
-    List<BusStopItem> busStopItemList;
+    private LayoutInflater inflater;
+    private List<BusStopItem> busStopItemList;
+    private OnBusStopClickListener mListener;
 
     // constructor for adapter
-    public BusStopAdapter(Context context, List<BusStopItem> busStopItemList) {
+    public BusStopAdapter(Context context, List<BusStopItem> busStopItemList, OnBusStopClickListener listener) {
         this.inflater = LayoutInflater.from(context);
         this.busStopItemList = busStopItemList;
+        this.mListener = listener;
     }
 
     // viewholder class
@@ -48,15 +50,25 @@ public class BusStopAdapter extends RecyclerView.Adapter<BusStopAdapter.BusStopV
 
     @Override
     public void onBindViewHolder(@NonNull BusStopViewHolder holder, int position) {
+
+        BusStopItem busStopItem = busStopItemList.get(position);
+
         //TODO: might need to change to holder.getAdapterPosition()
-        holder.bus_stop_name_textview.setText(busStopItemList.get(position).getBusStopName());
-        holder.bus_stop_road_textview.setText(busStopItemList.get(position).getBusStopRoad());
-        holder.bus_stop_code_textview.setText(busStopItemList.get(position).getBusStopCode());
+        holder.bus_stop_name_textview.setText(busStopItem.getBusStopName());
+        holder.bus_stop_road_textview.setText(busStopItem.getBusStopRoad());
+        holder.bus_stop_code_textview.setText(busStopItem.getBusStopCode());
+        holder.itemView.setOnClickListener(view -> {
+            mListener.onBusStopClicked(busStopItem);
+        });
     }
 
     @Override
     public int getItemCount() {
         return busStopItemList.size();
+    }
+
+    public interface OnBusStopClickListener {
+        void onBusStopClicked(BusStopItem busStopItem);
     }
 
 }
