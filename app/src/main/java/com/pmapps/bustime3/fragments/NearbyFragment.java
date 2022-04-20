@@ -1,4 +1,4 @@
-package com.pmapps.bustime3;
+package com.pmapps.bustime3.fragments;
 
 import static com.google.android.gms.location.LocationRequest.PRIORITY_HIGH_ACCURACY;
 
@@ -35,6 +35,9 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.pmapps.bustime3.busstop.BusStopAdapter;
+import com.pmapps.bustime3.busstop.BusStopItem;
+import com.pmapps.bustime3.R;
 
 import org.json.JSONArray;
 import org.json.JSONException;

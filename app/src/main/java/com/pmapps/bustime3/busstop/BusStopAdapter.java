@@ -1,4 +1,4 @@
-package com.pmapps.bustime3;
+package com.pmapps.bustime3.busstop;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -8,6 +8,8 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.pmapps.bustime3.R;
 
 import java.util.List;
 
@@ -57,18 +59,11 @@ public class BusStopAdapter extends RecyclerView.Adapter<BusStopAdapter.BusStopV
         holder.bus_stop_name_textview.setText(busStopItem.getBusStopName());
         holder.bus_stop_road_textview.setText(busStopItem.getBusStopRoad());
         holder.bus_stop_code_textview.setText(busStopItem.getBusStopCode());
-        holder.itemView.setOnClickListener(view -> {
-            mListener.onBusStopClicked(busStopItem);
-        });
+        holder.itemView.setOnClickListener(view -> mListener.onBusStopClicked(busStopItem));
     }
 
     @Override
     public int getItemCount() {
         return busStopItemList.size();
     }
-
-    public interface OnBusStopClickListener {
-        void onBusStopClicked(BusStopItem busStopItem);
-    }
-
 }

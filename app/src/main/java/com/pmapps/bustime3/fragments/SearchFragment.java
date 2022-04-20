@@ -1,4 +1,4 @@
-package com.pmapps.bustime3;
+package com.pmapps.bustime3.fragments;
 
 import android.os.Bundle;
 
@@ -8,15 +8,18 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-public class FavFragment extends Fragment {
+import com.pmapps.bustime3.R;
 
-    public FavFragment() {
+public class SearchFragment extends Fragment {
+
+    public SearchFragment() {
         // Required empty public constructor
     }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_fav, container, false);
+        return inflater.inflate(R.layout.fragment_search, container, false);
     }
 }

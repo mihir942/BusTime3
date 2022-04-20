@@ -1,4 +1,4 @@
-package com.pmapps.bustime3;
+package com.pmapps.bustime3.busstop;
 
 import com.google.android.gms.maps.model.LatLng;
 

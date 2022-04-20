@@ -14,6 +14,9 @@ import android.util.Log;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
+import com.pmapps.bustime3.fragments.FavFragment;
+import com.pmapps.bustime3.fragments.NearbyFragment;
+import com.pmapps.bustime3.fragments.SearchFragment;
 
 public class MainActivity extends AppCompatActivity {
 
