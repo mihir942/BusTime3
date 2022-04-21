@@ -4,6 +4,7 @@ import static com.google.android.gms.location.LocationRequest.PRIORITY_HIGH_ACCU
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
@@ -35,9 +36,11 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.pmapps.bustime3.bus.BusTimingsActivity;
 import com.pmapps.bustime3.busstop.BusStopAdapter;
 import com.pmapps.bustime3.busstop.BusStopItem;
 import com.pmapps.bustime3.R;
+import com.pmapps.bustime3.busstop.OnBusStopClickListener;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -101,8 +104,14 @@ public class NearbyFragment extends Fragment implements OnMapReadyCallback, Goog
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(mContext));
         busStopItemList = new ArrayList<>();
-        busStopAdapter = new BusStopAdapter(mContext, busStopItemList, busStopItem -> Log.d("CLICKED","Stop clicked: " + busStopItem.getBusStopName() + ": " + busStopItem.getBusStopCode()));
-        recyclerView.setAdapter(busStopAdapter);
+        busStopAdapter = new BusStopAdapter(mContext, busStopItemList, new OnBusStopClickListener() {
+            @Override
+            public void onBusStopClicked(BusStopItem busStopItem) {
+                Log.d("CLICKED", "Stop clicked: " + busStopItem.getBusStopName() + ": " + busStopItem.getBusStopCode());
+                openBusStop(busStopItem.getBusStopCode());
+            }
+        });
+                recyclerView.setAdapter(busStopAdapter);
     }
 
     // figure out current location of the user. based on this, fetch the surrounding bus stops.
@@ -165,6 +174,7 @@ public class NearbyFragment extends Fragment implements OnMapReadyCallback, Goog
     public void onInfoWindowClick(@NonNull Marker marker) {
         String tag = String.valueOf(marker.getTag());
         Log.d("TAG","Bus Stop: " + tag);
+        openBusStop(tag);
     }
 
     // Helper method #1
@@ -193,5 +203,10 @@ public class NearbyFragment extends Fragment implements OnMapReadyCallback, Goog
         return null;
     }
 
+    private void openBusStop(String busStopCode) {
+        Intent intent = new Intent(mContext, BusTimingsActivity.class);
+        intent.putExtra("BUS_STOP_CODE",busStopCode);
+        startActivity(intent);
+    }
 
 }
