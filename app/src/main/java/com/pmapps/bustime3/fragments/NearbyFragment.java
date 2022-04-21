@@ -105,7 +105,7 @@ public class NearbyFragment extends Fragment implements OnMapReadyCallback, Goog
         busStopItemList = new ArrayList<>();
         busStopAdapter = new BusStopAdapter(mContext, busStopItemList, busStopItem -> {
             Log.d("CLICKED", "Stop clicked: " + busStopItem.getBusStopName() + ": " + busStopItem.getBusStopCode());
-            openBusStop(busStopItem.getBusStopCode());
+            openBusStop(busStopItem);
         });
                 recyclerView.setAdapter(busStopAdapter);
     }
@@ -151,7 +151,7 @@ public class NearbyFragment extends Fragment implements OnMapReadyCallback, Goog
                     BusStopItem busStopItem = new BusStopItem(bus_stop_name,bus_stop_road,bus_stop_code,bus_stop_coord);
                     busStopItemList.add(busStopItem);
                     MarkerOptions markerOptions = new MarkerOptions().title(bus_stop_name).icon(bitmapDescriptorFromVector(mContext,R.drawable.ic_bus_icon)).position(bus_stop_coord);
-                    mMap.addMarker(markerOptions).setTag(bus_stop_name);
+                    mMap.addMarker(markerOptions).setTag(busStopItem);
                 }
                 // all bus stop items have been added at this point
                 // now pass this big chunk of data to the adapter, let it do its job.
@@ -168,9 +168,8 @@ public class NearbyFragment extends Fragment implements OnMapReadyCallback, Goog
 
     @Override
     public void onInfoWindowClick(@NonNull Marker marker) {
-        String tag = String.valueOf(marker.getTag());
-        Log.d("TAG","Bus Stop: " + tag);
-        openBusStop(tag);
+        BusStopItem busStopItem = (BusStopItem) marker.getTag();
+        openBusStop(busStopItem);
     }
 
     // Helper method #1
@@ -199,11 +198,9 @@ public class NearbyFragment extends Fragment implements OnMapReadyCallback, Goog
         return null;
     }
 
-
-    private void openBusStop(String busStopCode) {
+    private void openBusStop(BusStopItem busStopItem) {
         Intent intent = new Intent(mContext, BusTimingsActivity.class);
-        intent.putExtra("BUS_STOP_CODE",busStopCode);
+        intent.putExtra("BUS_STOP_ITEM",busStopItem);
         startActivity(intent);
     }
-
 }

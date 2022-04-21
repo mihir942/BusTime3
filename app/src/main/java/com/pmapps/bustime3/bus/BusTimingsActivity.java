@@ -11,6 +11,7 @@ import android.widget.Toast;
 
 import com.google.android.material.appbar.MaterialToolbar;
 import com.pmapps.bustime3.R;
+import com.pmapps.bustime3.busstop.BusStopItem;
 
 public class BusTimingsActivity extends AppCompatActivity {
 
@@ -22,6 +23,10 @@ public class BusTimingsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_bus_timings);
         toolbar = findViewById(R.id.bus_stop_toolbar);
         setSupportActionBar(toolbar);
+
+        BusStopItem busStopItem = getIntent().getParcelableExtra("BUS_STOP_ITEM");
+        Toast.makeText(this,"BUSSTOP: " + busStopItem.getBusStopName() + busStopItem.getBusStopCode(),Toast.LENGTH_SHORT).show();
+        Log.d("CORD:",": " + busStopItem.getBusStopLoc().latitude);
     }
 
     @Override
