@@ -15,18 +15,12 @@
         android:background="@color/dark_purple"
         app:navigationIcon="@drawable/ic_back_icon"
         app:menu="@menu/bus_timings_menu"
+        app:titleTextAppearance="@style/BusTimingsToolbarStyle"
+
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/bus_stop_name_placeholder"
-            android:gravity="center"
-            android:textColor="@color/white"
-            android:textSize="24sp"
-            android:fontFamily="@font/circularstd_black_regular" />
 
     </com.google.android.material.appbar.MaterialToolbar>
 

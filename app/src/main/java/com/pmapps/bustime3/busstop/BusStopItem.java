@@ -6,10 +6,10 @@ import android.os.Parcelable;
 import com.google.android.gms.maps.model.LatLng;
 
 public class BusStopItem implements Parcelable {
-    private String busStopName;
-    private String busStopRoad;
-    private String busStopCode;
-    private LatLng busStopLoc;
+    private final String busStopName;
+    private final String busStopRoad;
+    private final String busStopCode;
+    private final LatLng busStopLoc;
 
     public BusStopItem(String busStopName, String busStopRoad, String busStopCode, LatLng busStopLoc) {
         this.busStopName = busStopName;
@@ -62,7 +62,4 @@ public class BusStopItem implements Parcelable {
         return busStopCode;
     }
 
-    public LatLng getBusStopLoc() {
-        return busStopLoc;
-    }
 }

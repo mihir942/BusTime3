@@ -14,4 +14,10 @@
         <!-- Customize your theme here. -->
         <item name="colorSecondaryContainer">@color/light_purple</item>
     </style>
+
+    <style name="BusTimingsToolbarStyle" parent="@style/TextAppearance.MaterialComponents.Headline6">
+        <item name="android:textColor">@color/white</item>
+        <item name="fontFamily">@font/circularstd_black_regular</item>
+        <item name="android:textSize">24sp</item>
+    </style>
 </resources>
