@@ -1,18 +1,14 @@
 package com.pmapps.bustime3.fragments;
 
 import static com.google.android.gms.location.LocationRequest.PRIORITY_HIGH_ACCURACY;
+import static com.pmapps.bustime3.HelperMethods.*;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.Canvas;
-import android.graphics.drawable.Drawable;
-import android.location.Location;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -31,8 +27,6 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.BitmapDescriptor;
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -131,7 +125,7 @@ public class NearbyFragment extends Fragment implements OnMapReadyCallback, Goog
         final String FINAL_URL = TIH_URL
                 + "?location=" + currentLocation.latitude + "%2C" + currentLocation.longitude
                 + "&radius=" + RADIUS
-                + "&apikey=" + TIH_API_KEY();
+                + "&apikey=" + TIH_API_KEY(mContext);
         JsonObjectRequest request = new JsonObjectRequest(FINAL_URL, response -> {
             try {
                 JSONArray jsonArray = response.getJSONArray("data");
@@ -170,32 +164,6 @@ public class NearbyFragment extends Fragment implements OnMapReadyCallback, Goog
     public void onInfoWindowClick(@NonNull Marker marker) {
         BusStopItem busStopItem = (BusStopItem) marker.getTag();
         openBusStop(busStopItem);
-    }
-
-    // Helper method #1
-    private LatLng locToLatLng(Location location) {
-        return new LatLng(location.getLatitude(), location.getLongitude());
-    }
-
-    // Helper method #2
-    private String TIH_API_KEY() {
-        return getResources().getString(R.string.TIH_API_KEY);
-    }
-
-    // Helper method #3
-    private BitmapDescriptor bitmapDescriptorFromVector(Context context, int vectorResId) {
-        Drawable vectorDrawable = ContextCompat.getDrawable(context,vectorResId);
-
-        int width, height;
-        if (vectorDrawable != null) {
-            width = vectorDrawable.getIntrinsicWidth();
-            height = vectorDrawable.getIntrinsicHeight();
-            vectorDrawable.setBounds(0,0,width,height);
-            Bitmap bitmap = Bitmap.createBitmap(width,height, Bitmap.Config.ARGB_8888);
-            vectorDrawable.draw(new Canvas(bitmap));
-            return BitmapDescriptorFactory.fromBitmap(bitmap);
-        }
-        return null;
     }
 
     private void openBusStop(BusStopItem busStopItem) {

@@ -27,7 +27,7 @@ public class BusStopAdapter extends RecyclerView.Adapter<BusStopAdapter.BusStopV
     }
 
     // viewholder class
-    public class BusStopViewHolder extends RecyclerView.ViewHolder {
+    public static class BusStopViewHolder extends RecyclerView.ViewHolder {
 
         TextView bus_stop_name_textview;
         TextView bus_stop_road_textview;
