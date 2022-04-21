@@ -11,7 +11,7 @@
     <com.google.android.material.appbar.MaterialToolbar
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:background="@color/light_purple"
+        android:background="@color/dark_purple"
         app:navigationIcon="@drawable/ic_back_icon"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
