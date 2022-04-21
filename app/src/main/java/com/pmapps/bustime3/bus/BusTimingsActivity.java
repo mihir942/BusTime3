@@ -4,18 +4,24 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.google.android.material.appbar.MaterialToolbar;
 import com.pmapps.bustime3.R;
 
 public class BusTimingsActivity extends AppCompatActivity {
+
+    MaterialToolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bus_timings);
+        toolbar = findViewById(R.id.bus_stop_toolbar);
+        setSupportActionBar(toolbar);
     }
 
     @Override
@@ -30,11 +36,13 @@ public class BusTimingsActivity extends AppCompatActivity {
         if (id == R.id.refresh_action_1) {
             refreshTimings();
             Toast.makeText(this, "Refresh!", Toast.LENGTH_SHORT).show();
+            return true;
         } else if (id == R.id.fav_action_2) {
             favouriteStop();
             Toast.makeText(this, "Favourite!", Toast.LENGTH_SHORT).show();
+            return true;
         }
-        return true;
+        return false;
     }
 
     private void refreshTimings() {
