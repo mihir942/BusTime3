@@ -3,9 +3,16 @@
     <string name="fav_page_1_title">Favourites</string>
     <string name="search_page_2_title">Search</string>
     <string name="nearby_page_3_title">Nearby</string>
+    <string name="refresh_menu_item">Refresh</string>
+    <string name="favourite_menu_item">Favourite</string>
     <string name="bus_stop_name_placeholder">Bus Stop Name</string>
     <string name="bus_stop_road_placeholder">Bus Stop Road</string>
     <string name="bus_stop_code_placeholder">Bus Stop Code</string>
-    <string name="refresh_menu_item">Refresh</string>
-    <string name="favourite_menu_item">Favourite</string>
+    <string name="bus_number_placeholder">63M</string>
+    <string name="bus_timing_placeholder_1">Arr</string>
+    <string name="bus_type_placeholder_1">double</string>
+    <string name="bus_timing_placeholder_2">11</string>
+    <string name="bus_type_placeholder_2">single</string>
+    <string name="bus_timing_placeholder_3">21</string>
+    <string name="bus_type_placeholder_3">double</string>
 </resources>

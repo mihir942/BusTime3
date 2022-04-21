@@ -9,4 +9,7 @@
     <color name="white">#FFFFFFFF</color>
     <color name="dark_purple">#3C3744</color>
     <color name="light_purple">#4A4458</color>
+    <color name="light_load">#00AB07</color>
+    <color name="medium_load">#E77D00</color>
+    <color name="heavy_load">#E70000</color>
 </resources>
