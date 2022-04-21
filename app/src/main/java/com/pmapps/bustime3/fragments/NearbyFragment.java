@@ -40,7 +40,6 @@ import com.pmapps.bustime3.bus.BusTimingsActivity;
 import com.pmapps.bustime3.busstop.BusStopAdapter;
 import com.pmapps.bustime3.busstop.BusStopItem;
 import com.pmapps.bustime3.R;
-import com.pmapps.bustime3.busstop.OnBusStopClickListener;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -104,12 +103,9 @@ public class NearbyFragment extends Fragment implements OnMapReadyCallback, Goog
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(mContext));
         busStopItemList = new ArrayList<>();
-        busStopAdapter = new BusStopAdapter(mContext, busStopItemList, new OnBusStopClickListener() {
-            @Override
-            public void onBusStopClicked(BusStopItem busStopItem) {
-                Log.d("CLICKED", "Stop clicked: " + busStopItem.getBusStopName() + ": " + busStopItem.getBusStopCode());
-                openBusStop(busStopItem.getBusStopCode());
-            }
+        busStopAdapter = new BusStopAdapter(mContext, busStopItemList, busStopItem -> {
+            Log.d("CLICKED", "Stop clicked: " + busStopItem.getBusStopName() + ": " + busStopItem.getBusStopCode());
+            openBusStop(busStopItem.getBusStopCode());
         });
                 recyclerView.setAdapter(busStopAdapter);
     }
@@ -202,6 +198,7 @@ public class NearbyFragment extends Fragment implements OnMapReadyCallback, Goog
         }
         return null;
     }
+
 
     private void openBusStop(String busStopCode) {
         Intent intent = new Intent(mContext, BusTimingsActivity.class);

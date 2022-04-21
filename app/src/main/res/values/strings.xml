@@ -6,4 +6,6 @@
     <string name="bus_stop_name_placeholder">Bus Stop Name</string>
     <string name="bus_stop_road_placeholder">Bus Stop Road</string>
     <string name="bus_stop_code_placeholder">Bus Stop Code</string>
+    <string name="refresh_menu_item">Refresh</string>
+    <string name="favourite_menu_item">Favourite</string>
 </resources>
