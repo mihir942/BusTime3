@@ -2,6 +2,8 @@ package com.pmapps.bustime3.bus;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
 import android.view.Menu;
@@ -10,20 +12,46 @@ import android.view.MenuItem;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.pmapps.bustime3.R;
 import com.pmapps.bustime3.busstop.BusStopItem;
+import com.pmapps.bustime3.enums.Load;
+import com.pmapps.bustime3.enums.Type;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class BusTimingsActivity extends AppCompatActivity {
 
     MaterialToolbar toolbar;
+
+    RecyclerView recyclerView;
+    List<BusItem> busItemList;
+    BusAdapter busAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bus_timings);
 
+        initialiseStuffs();
+    }
+
+    private void initialiseStuffs() {
         BusStopItem busStopItem = getIntent().getParcelableExtra("BUS_STOP_ITEM");
         toolbar = findViewById(R.id.bus_stop_toolbar);
         toolbar.setTitle(busStopItem.getBusStopName());
         setSupportActionBar(toolbar);
+
+        recyclerView = findViewById(R.id.bus_timings_recycler_view);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        busItemList = new ArrayList<>();
+        BusItem test = new BusItem("63M");
+        test.setBusTime1("Arr");
+        test.setBusLoad1(Load.MEDIUM);
+        test.setBusType1(Type.SINGLE);
+        busItemList.add(test);
+
+        busAdapter = new BusAdapter(this, busItemList);
+        recyclerView.setAdapter(busAdapter);
     }
 
     @Override

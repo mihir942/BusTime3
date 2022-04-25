@@ -11,6 +11,7 @@ import androidx.core.content.ContextCompat;
 import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.pmapps.bustime3.enums.*;
 
 public class HelperMethods {
     // Helper method #1
@@ -37,5 +38,24 @@ public class HelperMethods {
             return BitmapDescriptorFactory.fromBitmap(bitmap);
         }
         return null;
+    }
+
+    // Helper method #4
+    public static int colorForLoad(Load load) {
+        if (load == Load.LIGHT) {
+            return R.color.light_load;
+        } else if (load == Load.MEDIUM) {
+            return R.color.medium_load;
+        } else if (load == Load.HEAVY) {
+            return R.color.heavy_load;
+        }
+        return 0;
+    }
+
+    // Helper method #5
+    public static String stringForType(Type type) {
+        if (type == Type.SINGLE) return "single";
+        else if (type == Type.DOUBLE) return "double";
+        else return "";
     }
 }

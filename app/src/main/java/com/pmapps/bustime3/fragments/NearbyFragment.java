@@ -13,7 +13,6 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -98,10 +97,9 @@ public class NearbyFragment extends Fragment implements OnMapReadyCallback, Goog
         recyclerView.setLayoutManager(new LinearLayoutManager(mContext));
         busStopItemList = new ArrayList<>();
         busStopAdapter = new BusStopAdapter(mContext, busStopItemList, busStopItem -> {
-            Log.d("CLICKED", "Stop clicked: " + busStopItem.getBusStopName() + ": " + busStopItem.getBusStopCode());
             openBusStop(busStopItem);
         });
-                recyclerView.setAdapter(busStopAdapter);
+        recyclerView.setAdapter(busStopAdapter);
     }
 
     // figure out current location of the user. based on this, fetch the surrounding bus stops.
@@ -129,7 +127,9 @@ public class NearbyFragment extends Fragment implements OnMapReadyCallback, Goog
         JsonObjectRequest request = new JsonObjectRequest(FINAL_URL, response -> {
             try {
                 JSONArray jsonArray = response.getJSONArray("data");
-                for (int i = 0; i < NUM_OF_BUS_STOPS; i++) {
+                //TODO: Change to while loop. Need an additional constraint. i < 10 OR i < number of stops available, whichever comes first
+                int limit = Math.min(jsonArray.length(), NUM_OF_BUS_STOPS);
+                for (int i = 0; i < limit; i++) {
 
                     //retrieve all the data from a single bus stop
                     JSONObject busStopObject = jsonArray.getJSONObject(i);
@@ -152,6 +152,7 @@ public class NearbyFragment extends Fragment implements OnMapReadyCallback, Goog
                 // but we can't exactly initialise adapter here; it's already initialised.
                 // so we notify it that the data set has changed
                 busStopAdapter.notifyDataSetChanged();
+
 
             } catch (JSONException e) {
                 e.printStackTrace();
