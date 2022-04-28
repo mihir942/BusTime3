@@ -61,9 +61,11 @@ public class HelperMethods {
     public static String stringForType(Type type) {
         if (type == Type.SINGLE) return "single";
         else if (type == Type.DOUBLE) return "double";
+        else if (type == Type.BENDY) return "bendy";
         else return "";
     }
 
+    // Helper method #6
     public static String timeForData(String data) {
 
         String time_only = data.split("T")[1].split("[+]")[0];

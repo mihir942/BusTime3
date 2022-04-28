@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -80,7 +81,8 @@ public class BusTimingsActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();
         if (id == R.id.refresh_action_1) {
-            refreshTimings();
+            fetchTimings();
+            Toast.makeText(this, "Refresh", Toast.LENGTH_SHORT).show();
             return true;
         } else if (id == R.id.fav_action_2) {
             favouriteStop();
@@ -90,11 +92,15 @@ public class BusTimingsActivity extends AppCompatActivity {
     }
 
     private void fetchTimings() {
+
+        // clear existing data
+        busItemList.clear();
+        busAdapter.notifyDataSetChanged();
+
         RequestQueue requestQueue = Volley.newRequestQueue(this);
         final String FINAL_URL = TIH_URL
                 + busStopItem.getBusStopCode()
                 + "?apikey=" + TIH_API_KEY(this);
-
 
         JsonObjectRequest request = new JsonObjectRequest(FINAL_URL, (Response.Listener<JSONObject>) response -> {
             try {
@@ -149,10 +155,6 @@ public class BusTimingsActivity extends AppCompatActivity {
         }, Throwable::printStackTrace);
 
         requestQueue.add(request);
-    }
-
-    private void refreshTimings() {
-
     }
 
     private void favouriteStop() {
