@@ -41,13 +41,13 @@ public class HelperMethods {
     }
 
     // Helper method #4
-    public static int colorForLoad(Load load) {
+    public static int colorForLoad(Context context, Load load) {
         if (load == Load.LIGHT) {
-            return R.color.light_load;
+            return ContextCompat.getColor(context, R.color.light_load);
         } else if (load == Load.MEDIUM) {
-            return R.color.medium_load;
+            return ContextCompat.getColor(context, R.color.medium_load);
         } else if (load == Load.HEAVY) {
-            return R.color.heavy_load;
+            return ContextCompat.getColor(context, R.color.heavy_load);
         }
         return 0;
     }

@@ -22,12 +22,14 @@ public class BusAdapter extends RecyclerView.Adapter<BusAdapter.BusViewHolder>{
 
     private LayoutInflater inflater;
     private List<BusItem> busItemList;
+    private Context mContext;
     private final static String DASHES = "--";
     private final static String EMPTY = "";
 
     // constructor for adapter
     public BusAdapter(Context context, List<BusItem> busItemList) {
-        this.inflater = LayoutInflater.from(context);
+        this.mContext = context;
+        this.inflater = LayoutInflater.from(mContext);
         this.busItemList = busItemList;
     }
 
@@ -91,21 +93,21 @@ public class BusAdapter extends RecyclerView.Adapter<BusAdapter.BusViewHolder>{
         if (busItem.getBusTime1() != null) {
             time1 = busItem.getBusTime1();
             load1 = busItem.getBusLoad1();
-            color1 = colorForLoad(load1);
+            color1 = colorForLoad(mContext, load1);
             type1 = busItem.getBusType1();
             type1_str = stringForType(type1);
 
             if (busItem.getBusTime2() != null) {
                 time2 = busItem.getBusTime2();
                 load2 = busItem.getBusLoad2();
-                color2 = colorForLoad(load2);
+                color2 = colorForLoad(mContext, load2);
                 type2 = busItem.getBusType2();
                 type2_str = stringForType(type2);
 
                 if (busItem.getBusTime3() != null) {
                     time3 = busItem.getBusTime3();
                     load3 = busItem.getBusLoad3();
-                    color3 = colorForLoad(load3);
+                    color3 = colorForLoad(mContext, load3);
                     type3 = busItem.getBusType3();
                     type3_str = stringForType(type3);
 

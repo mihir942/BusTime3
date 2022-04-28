@@ -46,7 +46,7 @@ public class BusTimingsActivity extends AppCompatActivity {
         busItemList = new ArrayList<>();
         BusItem test = new BusItem("63M");
         test.setBusTime1("Arr");
-        test.setBusLoad1(Load.MEDIUM);
+        test.setBusLoad1(Load.LIGHT);
         test.setBusType1(Type.SINGLE);
         busItemList.add(test);
 
