@@ -13,6 +13,11 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.pmapps.bustime3.enums.*;
 
+
+import java.time.Duration;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+
 public class HelperMethods {
     // Helper method #1
     public static LatLng locToLatLng(Location location) {
@@ -58,4 +63,53 @@ public class HelperMethods {
         else if (type == Type.DOUBLE) return "double";
         else return "";
     }
+
+    public static String timeForData(String data) {
+
+        String time_only = data.split("T")[1].split("[+]")[0];
+
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("HH:mm:ss");
+        LocalTime time1 = LocalTime.parse(time_only, dtf);
+        LocalTime time2 = LocalTime.now();
+
+        Duration duration = Duration.between(time2, time1);
+        long minutes = duration.toMinutes();
+        String minutes_str = String.valueOf(minutes);
+        int minutes_int = Integer.parseInt(minutes_str);
+
+        if (minutes_int <= 0) {
+            return "Arr";
+        } else {
+            return minutes_str;
+        }
+    }
+
+    // Helper method #7
+    public static Load loadForData(String data) {
+        switch (data) {
+            case "SEA":
+                return Load.LIGHT;
+            case "SDA":
+                return Load.MEDIUM;
+            case "LSD":
+                return Load.HEAVY;
+            default:
+                return Load.LIGHT;
+        }
+    }
+
+    // Helper method #8
+    public static Type typeForData(String data) {
+        switch (data) {
+            case "SD":
+                return Type.SINGLE;
+            case "DD":
+                return Type.DOUBLE;
+            case "BD":
+                return Type.BENDY;
+            default:
+                return Type.SINGLE;
+        }
+    }
+
 }

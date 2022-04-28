@@ -53,6 +53,7 @@ public class NearbyFragment extends Fragment implements OnMapReadyCallback, Goog
     private final static String TIH_URL = "https://tih-api.stb.gov.sg/transport/v1/bus_stop";
     private final static short RADIUS = 200;
     private final static byte NUM_OF_BUS_STOPS = 10;
+    private final static String ARRAY_NAME = "data";
     private final static String CODE_STRING = "code";
     private final static String ROAD_STRING = "roadName";
     private final static String DESC_STRING = "description";
@@ -126,8 +127,7 @@ public class NearbyFragment extends Fragment implements OnMapReadyCallback, Goog
                 + "&apikey=" + TIH_API_KEY(mContext);
         JsonObjectRequest request = new JsonObjectRequest(FINAL_URL, response -> {
             try {
-                JSONArray jsonArray = response.getJSONArray("data");
-                //TODO: Change to while loop. Need an additional constraint. i < 10 OR i < number of stops available, whichever comes first
+                JSONArray jsonArray = response.getJSONArray(ARRAY_NAME);
                 int limit = Math.min(jsonArray.length(), NUM_OF_BUS_STOPS);
                 for (int i = 0; i < limit; i++) {
 
