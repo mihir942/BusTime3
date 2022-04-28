@@ -8,8 +8,10 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -59,7 +61,7 @@ public class BusTimingsActivity extends AppCompatActivity {
         toolbar = findViewById(R.id.bus_stop_toolbar);
         toolbar.setTitle(busStopItem.getBusStopName());
         setSupportActionBar(toolbar);
-
+        toolbar.setNavigationOnClickListener(view -> this.finish());
         recyclerView = findViewById(R.id.bus_timings_recycler_view);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
