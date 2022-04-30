@@ -4,9 +4,11 @@ import static com.pmapps.bustime3.HelperMethods.*;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -85,7 +87,7 @@ public class BusTimingsActivity extends AppCompatActivity {
             Toast.makeText(this, "Refresh", Toast.LENGTH_SHORT).show();
             return true;
         } else if (id == R.id.fav_action_2) {
-            favouriteStop();
+            favouriteStop(item);
             return true;
         }
         return false;
@@ -157,7 +159,10 @@ public class BusTimingsActivity extends AppCompatActivity {
         requestQueue.add(request);
     }
 
-    private void favouriteStop() {
-
+    private void favouriteStop(MenuItem item) {
+        Drawable outline = ContextCompat.getDrawable(this, R.drawable.ic_fav_icon_1);
+        Drawable filled = ContextCompat.getDrawable(this, R.drawable.ic_fav_icon_filled);
+        if (item.getIcon() == outline) item.setIcon(filled);
+        else if (item.getIcon() == filled) item.setIcon(outline);
     }
 }
