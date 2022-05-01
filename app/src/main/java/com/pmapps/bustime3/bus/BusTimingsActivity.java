@@ -23,6 +23,9 @@ import com.android.volley.toolbox.Volley;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.pmapps.bustime3.R;
 import com.pmapps.bustime3.busstop.BusStopItem;
+import com.pmapps.bustime3.database.BusStopDao;
+import com.pmapps.bustime3.database.BusStopDatabase;
+import com.pmapps.bustime3.database.BusStopModel;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -76,6 +79,18 @@ public class BusTimingsActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.bus_timings_menu, menu);
+
+        //set favourite icon
+        boolean exists = BusStopDatabase
+                .getInstance(getApplicationContext())
+                .busStopDao()
+                .exists(busStopItem.getBusStopCode());
+        if (exists) {
+            menu.getItem(1).setIcon(ContextCompat.getDrawable(getApplicationContext(),R.drawable.ic_fav_icon_filled));
+        }
+        else {
+            menu.getItem(1).setIcon(ContextCompat.getDrawable(getApplicationContext(),R.drawable.ic_fav_icon_1));
+        }
         return true;
     }
 
@@ -87,10 +102,24 @@ public class BusTimingsActivity extends AppCompatActivity {
             Toast.makeText(this, "Refresh", Toast.LENGTH_SHORT).show();
             return true;
         } else if (id == R.id.fav_action_2) {
-            Drawable currentDrawable = item.getIcon();
             Drawable outline = ContextCompat.getDrawable(this, R.drawable.ic_fav_icon_1);
             Drawable filled = ContextCompat.getDrawable(this, R.drawable.ic_fav_icon_filled);
 
+            BusStopDao dao = BusStopDatabase.getInstance(getApplicationContext()).busStopDao();
+            BusStopModel model = new BusStopModel(busStopItem.getBusStopCode(), busStopItem.getBusStopName(), busStopItem.getBusStopRoad());
+
+            boolean exists = BusStopDatabase
+                    .getInstance(getApplicationContext())
+                    .busStopDao()
+                    .exists(busStopItem.getBusStopCode());
+
+            if (exists) {
+                dao.deleteBusStop(model);
+                item.setIcon(outline);
+            } else {
+                dao.insertBusStop(model);
+                item.setIcon(filled);
+            }
             return true;
         }
         return false;
