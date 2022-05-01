@@ -87,7 +87,10 @@ public class BusTimingsActivity extends AppCompatActivity {
             Toast.makeText(this, "Refresh", Toast.LENGTH_SHORT).show();
             return true;
         } else if (id == R.id.fav_action_2) {
-            favouriteStop(item);
+            Drawable currentDrawable = item.getIcon();
+            Drawable outline = ContextCompat.getDrawable(this, R.drawable.ic_fav_icon_1);
+            Drawable filled = ContextCompat.getDrawable(this, R.drawable.ic_fav_icon_filled);
+
             return true;
         }
         return false;
@@ -157,12 +160,5 @@ public class BusTimingsActivity extends AppCompatActivity {
         }, Throwable::printStackTrace);
 
         requestQueue.add(request);
-    }
-
-    private void favouriteStop(MenuItem item) {
-        Drawable outline = ContextCompat.getDrawable(this, R.drawable.ic_fav_icon_1);
-        Drawable filled = ContextCompat.getDrawable(this, R.drawable.ic_fav_icon_filled);
-        if (item.getIcon() == outline) item.setIcon(filled);
-        else if (item.getIcon() == filled) item.setIcon(outline);
     }
 }
