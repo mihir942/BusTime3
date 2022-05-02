@@ -9,7 +9,13 @@ public class BusStopItem implements Parcelable {
     private final String busStopName;
     private final String busStopRoad;
     private final String busStopCode;
-    private final LatLng busStopLoc;
+    private LatLng busStopLoc;
+
+    public BusStopItem(String busStopName, String busStopRoad, String busStopCode) {
+        this.busStopName = busStopName;
+        this.busStopRoad = busStopRoad;
+        this.busStopCode = busStopCode;
+    }
 
     public BusStopItem(String busStopName, String busStopRoad, String busStopCode, LatLng busStopLoc) {
         this.busStopName = busStopName;

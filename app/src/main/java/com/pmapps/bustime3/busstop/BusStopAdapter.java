@@ -55,7 +55,6 @@ public class BusStopAdapter extends RecyclerView.Adapter<BusStopAdapter.BusStopV
 
         BusStopItem busStopItem = busStopItemList.get(position);
 
-        //TODO: might need to change to holder.getAdapterPosition()
         holder.bus_stop_name_textview.setText(busStopItem.getBusStopName());
         holder.bus_stop_road_textview.setText(busStopItem.getBusStopRoad());
         holder.bus_stop_code_textview.setText(busStopItem.getBusStopCode());
