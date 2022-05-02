@@ -6,6 +6,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -64,6 +65,8 @@ public class FavFragment extends Fragment {
             openBusStop(busStopItem);
         });
         recyclerView.setAdapter(busStopAdapter);
+        ItemTouchHelper helper = new ItemTouchHelper(itemTouchHelperCallback);
+        helper.attachToRecyclerView(recyclerView);
     }
 
     private void openBusStop(BusStopItem busStopItem) {
@@ -84,4 +87,20 @@ public class FavFragment extends Fragment {
         //after fetching
         busStopAdapter.notifyDataSetChanged();
     }
+
+    ItemTouchHelper.SimpleCallback itemTouchHelperCallback = new ItemTouchHelper.SimpleCallback(0,ItemTouchHelper.LEFT) {
+        @Override
+        public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+            return false;
+        }
+
+        @Override
+        public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+
+            BusStopDao dao = BusStopDatabase.getInstance(mContext.getApplicationContext()).busStopDao();
+            dao.deleteBusStopWithCode(busStopItemList.get(viewHolder.getAdapterPosition()).getBusStopCode());
+            busStopAdapter.notifyItemRemoved(viewHolder.getAdapterPosition());
+            fetchBusStops();
+        }
+    };
 }

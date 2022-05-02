@@ -21,6 +21,9 @@ public interface BusStopDao {
     @Delete
     void deleteBusStop(BusStopModel model);
 
+    @Query("DELETE FROM fav_bus_stops WHERE code=:code")
+    void deleteBusStopWithCode(String code);
+
     @Query("SELECT EXISTS (SELECT 1 FROM fav_bus_stops WHERE code = :code)")
     boolean exists(String code);
 
