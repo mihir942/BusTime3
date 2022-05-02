@@ -2,9 +2,15 @@ package com.pmapps.bustime3.fragments;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Rect;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -89,6 +95,7 @@ public class FavFragment extends Fragment {
     }
 
     ItemTouchHelper.SimpleCallback itemTouchHelperCallback = new ItemTouchHelper.SimpleCallback(0,ItemTouchHelper.LEFT) {
+
         @Override
         public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
             return false;
@@ -101,6 +108,36 @@ public class FavFragment extends Fragment {
             dao.deleteBusStopWithCode(busStopItemList.get(viewHolder.getAdapterPosition()).getBusStopCode());
             busStopAdapter.notifyItemRemoved(viewHolder.getAdapterPosition());
             fetchBusStops();
+        }
+
+        @Override
+        public void onChildDraw(@NonNull Canvas c, @NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
+            super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
+
+            final Drawable icon = ContextCompat.getDrawable(mContext.getApplicationContext(),R.drawable.ic_delete_icon);
+            final ColorDrawable background = new ColorDrawable(Color.RED);
+
+            View itemView = viewHolder.itemView;
+            int backgroundCornerOffset = 24;
+
+            int iconMargin = (itemView.getHeight() - icon.getIntrinsicHeight()) / 2;
+            int iconTop = itemView.getTop() + (itemView.getHeight() - icon.getIntrinsicHeight()) / 2;
+            int iconBottom = iconTop + icon.getIntrinsicHeight();
+
+            if (dX < 0) {
+                int iconLeft = itemView.getRight() - iconMargin - icon.getIntrinsicWidth();
+                int iconRight = itemView.getRight() - iconMargin;
+                icon.setBounds(iconLeft, iconTop, iconRight, iconBottom);
+
+                background.setBounds(itemView.getRight() + ((int) dX) - backgroundCornerOffset,
+                        itemView.getTop(),
+                        itemView.getRight(),
+                        itemView.getBottom());
+            } else {
+                background.setBounds(0, 0, 0, 0);
+            }
+            background.draw(c);
+            icon.draw(c);
         }
     };
 }
