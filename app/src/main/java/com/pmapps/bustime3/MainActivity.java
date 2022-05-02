@@ -37,9 +37,8 @@ public class MainActivity extends AppCompatActivity {
         bottomNavigationView = findViewById(R.id.bottom_navigation);
         bottomNavigationView.setOnItemSelectedListener(listener);
 
-        // at the start, goes to the Nearby Page automatically
-        getSupportFragmentManager().beginTransaction().replace(R.id.frame_layout, new NearbyFragment()).commit();
-        bottomNavigationView.setSelectedItemId(R.id.nearby_page_3);
+        // at the start, goes to the Favourites Page automatically
+        getSupportFragmentManager().beginTransaction().replace(R.id.frame_layout, new FavFragment()).commit();
 
         // permissions related stuff
         contract = new ActivityResultContracts.RequestMultiplePermissions();
