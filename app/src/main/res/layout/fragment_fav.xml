@@ -7,6 +7,14 @@
     android:background="@color/dark_purple"
     tools:context=".fragments.FavFragment">
 
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/left_guideline_favpage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+
+        app:layout_constraintGuide_percent="0.1" />
+
     <TextView
         android:id="@+id/fav_title_textview"
         android:layout_width="wrap_content"
@@ -16,8 +24,7 @@
         android:text="@string/fav_page_1_title"
         android:textColor="@color/white"
         android:textSize="24sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toStartOf="@id/left_guideline_favpage"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintHorizontal_bias="0.1"
         />
