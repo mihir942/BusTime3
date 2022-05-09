@@ -39,13 +39,16 @@
     <androidx.appcompat.widget.SearchView
         android:id="@+id/search_view"
         android:layout_width="0dp"
-        android:layout_height="22dp"
-        android:layout_marginTop="22dp"
+        android:layout_height="30dp"
+        android:layout_marginTop="20dp"
 
-        android:background="@color/light_purple"
+        android:background="@drawable/search_view_bg"
+        app:layout_constraintEnd_toStartOf="@id/right_guideline_searchpage"
 
         app:layout_constraintStart_toStartOf="@id/left_guideline_searchpage"
-        app:layout_constraintEnd_toStartOf="@id/right_guideline_searchpage"
-        app:layout_constraintTop_toBottomOf="@id/search_title_textview" />
+        app:layout_constraintTop_toBottomOf="@id/search_title_textview"
+        app:searchHintIcon="@drawable/ic_searchview_icon"
+        app:searchIcon="@drawable/ic_searchview_icon"
+        app:iconifiedByDefault="false" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

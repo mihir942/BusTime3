@@ -12,4 +12,5 @@
     <color name="light_load">#00AB07</color>
     <color name="medium_load">#E77D00</color>
     <color name="heavy_load">#E70000</color>
+    <color name="faded_white">#80FFFFFF</color>
 </resources>

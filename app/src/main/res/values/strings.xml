@@ -15,4 +15,5 @@
     <string name="bus_type_placeholder_2">single</string>
     <string name="bus_timing_placeholder_3">21</string>
     <string name="bus_type_placeholder_3">double</string>
+    <string name="searchview_hint_text">find bus stops / bus routes</string>
 </resources>
