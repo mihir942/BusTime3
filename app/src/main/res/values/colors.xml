@@ -13,4 +13,6 @@
     <color name="medium_load">#E77D00</color>
     <color name="heavy_load">#E70000</color>
     <color name="faded_white">#80FFFFFF</color>
+    <color name="chip_stroke_color">#E77D00</color>
+    <color name="chip_text_color">#E77D00</color>
 </resources>

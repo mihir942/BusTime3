@@ -51,4 +51,56 @@
         app:searchIcon="@drawable/ic_searchview_icon"
         app:iconifiedByDefault="false" />
 
+    <com.google.android.material.chip.ChipGroup
+        android:id="@+id/chip_group"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+
+        app:singleSelection="true"
+        app:singleLine="true"
+
+        app:layout_constraintStart_toStartOf="@id/left_guideline_searchpage"
+        app:layout_constraintEnd_toEndOf="@id/right_guideline_searchpage"
+        app:layout_constraintTop_toBottomOf="@id/search_view">
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chip1_busroutes"
+            android:layout_width="wrap_content"
+            android:layout_height="48dp"
+            style="@style/Widget.Material3.Chip.Filter"
+
+            android:checkable="true"
+            android:checked="true"
+            android:text="@string/search_chip1_busroutes"
+            android:textColor="@color/chip_text_color"
+            android:textSize="11sp"
+            android:textAppearance="@style/ChipTextStyle"
+
+            app:chipBackgroundColor="@color/light_purple"
+            app:chipStrokeColor="@color/chip_stroke_color"
+            app:chipStrokeWidth="1dp"
+            app:checkedIconTint="@color/chip_text_color"
+            app:chipCornerRadius="24dp" />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chip2_busstops"
+            android:layout_width="wrap_content"
+            android:layout_height="48dp"
+            style="@style/Widget.Material3.Chip.Filter"
+
+            android:checkable="true"
+            android:checked="false"
+            android:text="@string/search_chip2_busstops"
+            android:textColor="@color/chip_text_color"
+            android:textSize="11sp"
+            android:textAppearance="@style/ChipTextStyle"
+
+            app:chipBackgroundColor="@color/light_purple"
+            app:chipStrokeColor="@color/chip_stroke_color"
+            app:chipStrokeWidth="1dp"
+            app:checkedIconTint="@color/chip_text_color"
+            app:chipCornerRadius="24dp" />
+
+    </com.google.android.material.chip.ChipGroup>
+
 </androidx.constraintlayout.widget.ConstraintLayout>
