@@ -58,6 +58,7 @@
 
         app:singleSelection="true"
         app:singleLine="true"
+        app:selectionRequired="true"
 
         app:layout_constraintStart_toStartOf="@id/left_guideline_searchpage"
         app:layout_constraintEnd_toEndOf="@id/right_guideline_searchpage"
