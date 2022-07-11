@@ -10,18 +10,24 @@ import androidx.appcompat.widget.SearchView;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
+import com.google.android.material.chip.ChipGroup;
 import com.pmapps.bustime3.R;
 
 public class SearchFragment extends Fragment {
 
     private Context mContext;
+    private final int CHIP_ID_0_ROUTES = 2131296783;
+    private final int CHIP_ID_1_STOPS = 2131296784;
+    private final String[] OPERATORS = {"SBST","SMRT","GAS","TTS"};
 
     // initialising the context of fragment, for ease of use. no need to call requireContext() all the time.
     @Override
@@ -42,13 +48,13 @@ public class SearchFragment extends Fragment {
 
     private void initialiseStuffs(View v) {
         SearchView searchView = v.findViewById(R.id.search_view);
+        ChipGroup chipGroup = v.findViewById(R.id.chip_group);
 
         // GET: gets the "cross button" component/child of the search view
         AppCompatImageView imageView = (AppCompatImageView) searchView.findViewById(androidx.appcompat.R.id.search_close_btn);
 
         // SET: sets the image of the "cross button"
         imageView.setImageDrawable(ContextCompat.getDrawable(mContext,R.drawable.ic_searchview_cancel_icon));
-
 
         // GET: gets the edit text component/child of the searchview
         EditText editText = (EditText) searchView.findViewById(androidx.appcompat.R.id.search_src_text);
@@ -62,6 +68,20 @@ public class SearchFragment extends Fragment {
         // SET: re-sets the hint text color to faded white, since the original text appearance is white.
         editText.setHintTextColor(ContextCompat.getColor(mContext,R.color.faded_white));
 
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                for (String operator:OPERATORS) {
+
+                }
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                return false;
+            }
+        });
 
     }
 }
