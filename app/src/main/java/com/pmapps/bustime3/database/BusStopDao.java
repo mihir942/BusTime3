@@ -12,7 +12,7 @@ import java.util.List;
 public interface BusStopDao {
 
     // Select all data
-    @Query("SELECT * FROM fav_bus_stops")
+    @Query("SELECT * FROM tbl1_fav_bus_stops")
     List<BusStopModel> getAllData();
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
@@ -21,10 +21,10 @@ public interface BusStopDao {
     @Delete
     void deleteBusStop(BusStopModel model);
 
-    @Query("DELETE FROM fav_bus_stops WHERE code=:code")
+    @Query("DELETE FROM tbl1_fav_bus_stops WHERE code=:code")
     void deleteBusStopWithCode(String code);
 
-    @Query("SELECT EXISTS (SELECT 1 FROM fav_bus_stops WHERE code = :code)")
+    @Query("SELECT EXISTS (SELECT 1 FROM tbl1_fav_bus_stops WHERE code = :code)")
     boolean exists(String code);
 
 }

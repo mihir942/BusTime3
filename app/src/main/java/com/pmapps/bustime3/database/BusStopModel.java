@@ -5,7 +5,7 @@ import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
-@Entity(tableName = "fav_bus_stops")
+@Entity(tableName = "tbl1_fav_bus_stops")
 public class BusStopModel {
 
     public BusStopModel(String busStopCode, String busStopName, String busStopRoad) {

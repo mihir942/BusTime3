@@ -7,21 +7,21 @@ import androidx.room.Room;
 import androidx.room.RoomDatabase;
 
 @Database(entities = {BusStopModel.class}, version = 1, exportSchema = false)
-public abstract class BusStopDatabase extends RoomDatabase {
+public abstract class AppDatabase extends RoomDatabase {
 
     // database name
-    private static final String DB_NAME = "bus_stops_db";
+    private static final String DB_NAME = "app_db";
 
     // create database instance
-    private static BusStopDatabase instance;
+    private static AppDatabase instance;
 
     // instance creation
-    public static synchronized BusStopDatabase getInstance(Context context) {
+    public static synchronized AppDatabase getInstance(Context context) {
         if (instance == null) {
             instance = Room
                     .databaseBuilder(
                         context.getApplicationContext(),
-                        BusStopDatabase.class,
+                        AppDatabase.class,
                         DB_NAME)
                     .allowMainThreadQueries()
                     .fallbackToDestructiveMigration()

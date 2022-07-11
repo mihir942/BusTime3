@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.Rect;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -25,7 +24,7 @@ import com.pmapps.bustime3.bus.BusTimingsActivity;
 import com.pmapps.bustime3.busstop.BusStopAdapter;
 import com.pmapps.bustime3.busstop.BusStopItem;
 import com.pmapps.bustime3.database.BusStopDao;
-import com.pmapps.bustime3.database.BusStopDatabase;
+import com.pmapps.bustime3.database.AppDatabase;
 import com.pmapps.bustime3.database.BusStopModel;
 
 import java.util.ArrayList;
@@ -83,7 +82,7 @@ public class FavFragment extends Fragment {
 
     private void fetchBusStops() {
         busStopItemList.clear();
-        BusStopDao dao = BusStopDatabase.getInstance(mContext.getApplicationContext()).busStopDao();
+        BusStopDao dao = AppDatabase.getInstance(mContext.getApplicationContext()).busStopDao();
 
         for (BusStopModel model: dao.getAllData()) {
             BusStopItem item = new BusStopItem(model.getBusStopName(), model.getBusStopRoad(), model.getBusStopCode());
@@ -104,7 +103,7 @@ public class FavFragment extends Fragment {
         @Override
         public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
 
-            BusStopDao dao = BusStopDatabase.getInstance(mContext.getApplicationContext()).busStopDao();
+            BusStopDao dao = AppDatabase.getInstance(mContext.getApplicationContext()).busStopDao();
             dao.deleteBusStopWithCode(busStopItemList.get(viewHolder.getAdapterPosition()).getBusStopCode());
             busStopAdapter.notifyItemRemoved(viewHolder.getAdapterPosition());
             fetchBusStops();

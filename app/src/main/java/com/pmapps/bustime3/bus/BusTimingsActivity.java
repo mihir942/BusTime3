@@ -10,10 +10,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.Toast;
 
 import com.android.volley.RequestQueue;
@@ -23,8 +21,8 @@ import com.android.volley.toolbox.Volley;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.pmapps.bustime3.R;
 import com.pmapps.bustime3.busstop.BusStopItem;
+import com.pmapps.bustime3.database.AppDatabase;
 import com.pmapps.bustime3.database.BusStopDao;
-import com.pmapps.bustime3.database.BusStopDatabase;
 import com.pmapps.bustime3.database.BusStopModel;
 
 import org.json.JSONArray;
@@ -81,7 +79,7 @@ public class BusTimingsActivity extends AppCompatActivity {
         getMenuInflater().inflate(R.menu.bus_timings_menu, menu);
 
         //set favourite icon
-        boolean exists = BusStopDatabase
+        boolean exists = AppDatabase
                 .getInstance(getApplicationContext())
                 .busStopDao()
                 .exists(busStopItem.getBusStopCode());
@@ -105,10 +103,10 @@ public class BusTimingsActivity extends AppCompatActivity {
             Drawable outline = ContextCompat.getDrawable(this, R.drawable.ic_fav_icon_1);
             Drawable filled = ContextCompat.getDrawable(this, R.drawable.ic_fav_icon_filled);
 
-            BusStopDao dao = BusStopDatabase.getInstance(getApplicationContext()).busStopDao();
+            BusStopDao dao = AppDatabase.getInstance(getApplicationContext()).busStopDao();
             BusStopModel model = new BusStopModel(busStopItem.getBusStopCode(), busStopItem.getBusStopName(), busStopItem.getBusStopRoad());
 
-            boolean exists = BusStopDatabase
+            boolean exists = AppDatabase
                     .getInstance(getApplicationContext())
                     .busStopDao()
                     .exists(busStopItem.getBusStopCode());
