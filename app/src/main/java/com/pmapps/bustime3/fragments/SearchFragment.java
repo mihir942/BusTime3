@@ -42,8 +42,6 @@ public class SearchFragment extends Fragment {
 
     private Context mContext;
     private RouteDao routeDao;
-    private final int CHIP_ID_0_ROUTES = 2131296783;
-    private final int CHIP_ID_1_STOPS = 2131296784;
 
     private final static String[] OPERATORS = {"SBST","SMRT","GAS","TTS"};
     private final static String TIH_URL = "https://tih-api.stb.gov.sg/transport/v1/bus_service/operator/";
@@ -96,16 +94,10 @@ public class SearchFragment extends Fragment {
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                int checkedChipId = chipGroup.getCheckedChipId();
-                if (checkedChipId == CHIP_ID_0_ROUTES) {
-                    routeDao.clearAllRoutes();
-                    serviceCall0(TIH_URL + OPERATORS[0] + "?apikey=" + TIH_API_KEY(mContext), query);
-                    return true;
-                } else if (checkedChipId == CHIP_ID_1_STOPS) {
-                    Log.d("MODEL","NOT DOING ANYTHING CUZ ROUTES NOT SELECTED");
-                    return true;
-                }
-                return false;
+                Log.d("MODEL", String.valueOf(chipGroup.getCheckedChipId()));
+                routeDao.clearAllRoutes();
+                serviceCall0(TIH_URL + OPERATORS[0] + "?apikey=" + TIH_API_KEY(mContext), query);
+                return true;
             }
 
             @Override
