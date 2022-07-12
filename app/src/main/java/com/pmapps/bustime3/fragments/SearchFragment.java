@@ -26,6 +26,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
 import com.pmapps.bustime3.R;
 import com.pmapps.bustime3.database.AppDatabase;
@@ -37,6 +38,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.List;
+import java.util.Objects;
 
 public class SearchFragment extends Fragment {
 
@@ -94,10 +96,15 @@ public class SearchFragment extends Fragment {
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                Log.d("MODEL", String.valueOf(chipGroup.getCheckedChipId()));
-                routeDao.clearAllRoutes();
-                serviceCall0(TIH_URL + OPERATORS[0] + "?apikey=" + TIH_API_KEY(mContext), query);
-                return true;
+                Chip selectedChip = chipGroup.findViewById(chipGroup.getCheckedChipId());
+                if (Objects.equals((String) selectedChip.getTag(), "0")) {
+                    routeDao.clearAllRoutes();
+                    serviceCall0(TIH_URL + OPERATORS[0] + "?apikey=" + TIH_API_KEY(mContext), query);
+                    return true;
+                } else {
+                    Log.d("MODEL","stops selected");
+                    return true;
+                }
             }
 
             @Override

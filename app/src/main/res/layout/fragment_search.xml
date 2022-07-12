@@ -76,6 +76,7 @@
             android:textColor="@color/chip_text_color"
             android:textSize="11sp"
             android:textAppearance="@style/ChipTextStyle"
+            android:tag="0"
 
             app:chipBackgroundColor="@color/light_purple"
             app:chipStrokeColor="@color/chip_stroke_color"
@@ -95,6 +96,7 @@
             android:textColor="@color/chip_text_color"
             android:textSize="11sp"
             android:textAppearance="@style/ChipTextStyle"
+            android:tag="1"
 
             app:chipBackgroundColor="@color/light_purple"
             app:chipStrokeColor="@color/chip_stroke_color"
