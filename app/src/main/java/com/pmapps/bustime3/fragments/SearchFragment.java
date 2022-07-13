@@ -16,9 +16,12 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.android.volley.RequestQueue;
@@ -32,11 +35,14 @@ import com.pmapps.bustime3.R;
 import com.pmapps.bustime3.database.AppDatabase;
 import com.pmapps.bustime3.database.RouteDao;
 import com.pmapps.bustime3.database.RouteModel;
+import com.pmapps.bustime3.search.RoutesAdapter;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -44,6 +50,10 @@ public class SearchFragment extends Fragment {
 
     private Context mContext;
     private RouteDao routeDao;
+    private RoutesAdapter routesAdapter;
+    private ArrayList<RouteModel> routeModelArrayList;
+    private ListView searchResultsListView;
+    private ProgressBar progressBar;
 
     private final static String[] OPERATORS = {"SBST","SMRT","GAS","TTS"};
     private final static String TIH_URL = "https://tih-api.stb.gov.sg/transport/v1/bus_service/operator/";
@@ -72,8 +82,14 @@ public class SearchFragment extends Fragment {
         routeDao = AppDatabase.getInstance(mContext.getApplicationContext()).routeDao();
 
         //initialise views
+        progressBar = v.findViewById(R.id.progress_bar);
         SearchView searchView = v.findViewById(R.id.search_view);
         ChipGroup chipGroup = v.findViewById(R.id.chip_group);
+        searchResultsListView = v.findViewById(R.id.search_results_listview);
+
+        routeModelArrayList = new ArrayList<>();
+        routesAdapter = new RoutesAdapter(mContext, routeModelArrayList);
+        searchResultsListView.setAdapter(routesAdapter);
 
         // GET: gets the "cross button" component/child of the search view
         AppCompatImageView imageView = (AppCompatImageView) searchView.findViewById(androidx.appcompat.R.id.search_close_btn);
@@ -98,7 +114,12 @@ public class SearchFragment extends Fragment {
             public boolean onQueryTextSubmit(String query) {
                 Chip selectedChip = chipGroup.findViewById(chipGroup.getCheckedChipId());
                 if (Objects.equals((String) selectedChip.getTag(), "0")) {
+                    progressBar.setVisibility(View.VISIBLE);
+
+                    InputMethodManager imm = (InputMethodManager) mContext.getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(searchView.getWindowToken(),0);
                     routeDao.clearAllRoutes();
+                    routesAdapter.clear();
                     serviceCall0(TIH_URL + OPERATORS[0] + "?apikey=" + TIH_API_KEY(mContext), query);
                     return true;
                 } else {
@@ -216,12 +237,15 @@ public class SearchFragment extends Fragment {
                     }
                     // on response success of 3, get MATCHING DATA
                     Log.d("SUCCESS","all 4 requests success!");
-                    List<RouteModel> list = routeDao.getMatchingData(query);
 
-                    // TODO: debug statement
-                    list.forEach((RouteModel routemodel) -> {
-                        Log.d("MODEL",routemodel.getBusNumber());
-                    });
+                    routeModelArrayList = (ArrayList<RouteModel>) routeDao.getMatchingData(query);
+                    routesAdapter.addAll(routeModelArrayList);
+                    progressBar.setVisibility(View.GONE);
+
+//                    // TODO: debug statement
+//                    routeModelArrayList.forEach((RouteModel routemodel) -> {
+//                        Log.d("MODEL",routemodel.getBusNumber());
+//                    });
 
                 } catch (JSONException e) {
                     e.printStackTrace();
