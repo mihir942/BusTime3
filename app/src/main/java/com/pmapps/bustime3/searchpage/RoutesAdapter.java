@@ -1,4 +1,4 @@
-package com.pmapps.bustime3.search;
+package com.pmapps.bustime3.searchpage;
 
 import android.content.Context;
 import android.view.LayoutInflater;

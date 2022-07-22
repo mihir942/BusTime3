@@ -1,4 +1,4 @@
-package com.pmapps.bustime3;
+package com.pmapps.bustime3.helper;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -11,7 +11,8 @@ import androidx.core.content.ContextCompat;
 import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
-import com.pmapps.bustime3.enums.*;
+import com.pmapps.bustime3.R;
+import com.pmapps.bustime3.helper.enums.*;
 
 
 import java.time.Duration;

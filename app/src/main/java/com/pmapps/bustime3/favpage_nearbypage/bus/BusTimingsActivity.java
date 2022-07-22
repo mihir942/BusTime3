@@ -1,6 +1,6 @@
-package com.pmapps.bustime3.bus;
+package com.pmapps.bustime3.favpage_nearbypage.bus;
 
-import static com.pmapps.bustime3.HelperMethods.*;
+import static com.pmapps.bustime3.helper.HelperMethods.*;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -20,7 +20,7 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.pmapps.bustime3.R;
-import com.pmapps.bustime3.busstop.BusStopItem;
+import com.pmapps.bustime3.favpage_nearbypage.busstop.BusStopItem;
 import com.pmapps.bustime3.database.AppDatabase;
 import com.pmapps.bustime3.database.BusStopDao;
 import com.pmapps.bustime3.database.BusStopModel;

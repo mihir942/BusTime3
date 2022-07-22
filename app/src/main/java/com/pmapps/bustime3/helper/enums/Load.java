@@ -1,4 +1,4 @@
-package com.pmapps.bustime3.enums;
+package com.pmapps.bustime3.helper.enums;
 
 public enum Load {
     LIGHT,

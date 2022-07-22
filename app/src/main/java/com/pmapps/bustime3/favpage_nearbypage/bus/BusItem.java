@@ -1,6 +1,6 @@
-package com.pmapps.bustime3.bus;
+package com.pmapps.bustime3.favpage_nearbypage.bus;
 
-import com.pmapps.bustime3.enums.*;
+import com.pmapps.bustime3.helper.enums.*;
 
 public class BusItem {
     private final String busNumber;

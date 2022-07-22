@@ -1,9 +1,8 @@
-package com.pmapps.bustime3.fragments;
+package com.pmapps.bustime3.searchpage;
 
-import static com.pmapps.bustime3.HelperMethods.*;
+import static com.pmapps.bustime3.helper.HelperMethods.*;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -17,14 +16,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.Button;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
-import android.widget.Toast;
 
-import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
@@ -35,15 +30,13 @@ import com.pmapps.bustime3.R;
 import com.pmapps.bustime3.database.AppDatabase;
 import com.pmapps.bustime3.database.RouteDao;
 import com.pmapps.bustime3.database.RouteModel;
-import com.pmapps.bustime3.search.RoutesAdapter;
+import com.pmapps.bustime3.searchpage.RoutesAdapter;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 
 public class SearchFragment extends Fragment {

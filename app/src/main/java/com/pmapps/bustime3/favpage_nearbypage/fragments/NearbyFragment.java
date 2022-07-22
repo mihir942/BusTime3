@@ -1,7 +1,7 @@
-package com.pmapps.bustime3.fragments;
+package com.pmapps.bustime3.favpage_nearbypage.fragments;
 
 import static com.google.android.gms.location.LocationRequest.PRIORITY_HIGH_ACCURACY;
-import static com.pmapps.bustime3.HelperMethods.*;
+import static com.pmapps.bustime3.helper.HelperMethods.*;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -29,9 +29,9 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.pmapps.bustime3.bus.BusTimingsActivity;
-import com.pmapps.bustime3.busstop.BusStopAdapter;
-import com.pmapps.bustime3.busstop.BusStopItem;
+import com.pmapps.bustime3.favpage_nearbypage.bus.BusTimingsActivity;
+import com.pmapps.bustime3.favpage_nearbypage.busstop.BusStopAdapter;
+import com.pmapps.bustime3.favpage_nearbypage.busstop.BusStopItem;
 import com.pmapps.bustime3.R;
 
 import org.json.JSONArray;

@@ -1,7 +1,7 @@
-package com.pmapps.bustime3.bus;
+package com.pmapps.bustime3.favpage_nearbypage.bus;
 
-import static com.pmapps.bustime3.HelperMethods.colorForLoad;
-import static com.pmapps.bustime3.HelperMethods.stringForType;
+import static com.pmapps.bustime3.helper.HelperMethods.colorForLoad;
+import static com.pmapps.bustime3.helper.HelperMethods.stringForType;
 
 import android.content.Context;
 import android.graphics.Color;
@@ -14,7 +14,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.pmapps.bustime3.R;
-import com.pmapps.bustime3.enums.*;
+import com.pmapps.bustime3.helper.enums.*;
 
 import java.util.List;
 

@@ -1,4 +1,4 @@
-package com.pmapps.bustime3.fragments;
+package com.pmapps.bustime3.favpage_nearbypage.fragments;
 
 import android.content.Context;
 import android.content.Intent;
@@ -20,9 +20,9 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.pmapps.bustime3.R;
-import com.pmapps.bustime3.bus.BusTimingsActivity;
-import com.pmapps.bustime3.busstop.BusStopAdapter;
-import com.pmapps.bustime3.busstop.BusStopItem;
+import com.pmapps.bustime3.favpage_nearbypage.bus.BusTimingsActivity;
+import com.pmapps.bustime3.favpage_nearbypage.busstop.BusStopAdapter;
+import com.pmapps.bustime3.favpage_nearbypage.busstop.BusStopItem;
 import com.pmapps.bustime3.database.BusStopDao;
 import com.pmapps.bustime3.database.AppDatabase;
 import com.pmapps.bustime3.database.BusStopModel;

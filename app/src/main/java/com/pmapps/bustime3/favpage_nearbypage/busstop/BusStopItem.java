@@ -1,4 +1,4 @@
-package com.pmapps.bustime3.busstop;
+package com.pmapps.bustime3.favpage_nearbypage.busstop;
 
 import android.os.Parcel;
 import android.os.Parcelable;
