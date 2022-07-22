@@ -9,14 +9,28 @@ import androidx.fragment.app.Fragment;
 import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.util.Log;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
+import com.pmapps.bustime3.database.AppDatabase;
+import com.pmapps.bustime3.database.LTADao;
+import com.pmapps.bustime3.database.LTAModel;
 import com.pmapps.bustime3.favpage_nearbypage.fragments.FavFragment;
 import com.pmapps.bustime3.favpage_nearbypage.fragments.NearbyFragment;
 import com.pmapps.bustime3.searchpage.SearchFragment;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -49,6 +63,38 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         askPermissions(launcher);
+
+        LTADao ltaDao = AppDatabase.getInstance(getApplicationContext()).ltaDao();
+        if (ltaDao.getNumRows() == 0) {
+            // insert all data
+
+            List<InputStream> inputStreamArrayList = new ArrayList<>();
+
+            for (int i = 0; i <= 10; i++) {
+                int identifier = getResources().getIdentifier("response"+i, "raw", getPackageName());
+                InputStream inputStream = getResources().openRawResource(identifier);
+                try {
+                    int size = inputStream.available();
+                    byte[] buffer = new byte[size];
+                    inputStream.read(buffer);
+                    inputStream.close();
+                    String myJson = new String(buffer, StandardCharsets.UTF_8);
+                    JSONObject jsonObject = new JSONObject(myJson);
+                    JSONArray jsonArray = jsonObject.getJSONArray("value");
+
+                    for (int k = 0; k < jsonArray.length(); k++) {
+                        JSONObject item = jsonArray.getJSONObject(k);
+                        String busStopCode = item.getString("BusStopCode");
+                        String busStopName = item.getString("Description");
+                        String busStopRoad = item.getString("RoadName");
+                        LTAModel ltaModel = new LTAModel(busStopCode, busStopName, busStopRoad);
+                        ltaDao.insertBusStop(ltaModel);
+                    }
+                } catch (IOException | JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
     }
 
     private void askPermissions(ActivityResultLauncher<String[]> mLauncher) {
