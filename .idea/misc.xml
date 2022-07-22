@@ -6,12 +6,15 @@
         <entry key="..\:/Users/mihir/AndroidStudioProjects/BusTime3/app/src/main/res/drawable/ic_bus_icon.xml" value="0.26614583333333336" />
         <entry key="..\:/Users/mihir/AndroidStudioProjects/BusTime3/app/src/main/res/drawable/ic_fav_icon_1.xml" value="0.26614583333333336" />
         <entry key="..\:/Users/mihir/AndroidStudioProjects/BusTime3/app/src/main/res/drawable/ic_fav_icon_filled.xml" value="0.26614583333333336" />
+        <entry key="..\:/Users/mihir/AndroidStudioProjects/BusTime3/app/src/main/res/drawable/ic_refresh_icon.xml" value="0.112" />
         <entry key="..\:/Users/mihir/AndroidStudioProjects/BusTime3/app/src/main/res/drawable/ic_search_icon_2.xml" value="0.26614583333333336" />
         <entry key="..\:/Users/mihir/AndroidStudioProjects/BusTime3/app/src/main/res/drawable/ic_searchview_icon.xml" value="0.26614583333333336" />
+        <entry key="..\:/Users/mihir/AndroidStudioProjects/BusTime3/app/src/main/res/drawable/ic_swap_dir_icon.xml" value="0.112" />
         <entry key="..\:/Users/mihir/AndroidStudioProjects/BusTime3/app/src/main/res/drawable/search_view_bg.xml" value="0.26614583333333336" />
         <entry key="..\:/Users/mihir/AndroidStudioProjects/BusTime3/app/src/main/res/font-v26/custom_fonts.xml" value="0.28020833333333334" />
         <entry key="..\:/Users/mihir/AndroidStudioProjects/BusTime3/app/src/main/res/font/custom_fonts.xml" value="0.28020833333333334" />
-        <entry key="..\:/Users/mihir/AndroidStudioProjects/BusTime3/app/src/main/res/layout/activity_bus_timings.xml" value="0.264" />
+        <entry key="..\:/Users/mihir/AndroidStudioProjects/BusTime3/app/src/main/res/layout/activity_bus_route.xml" value="0.25" />
+        <entry key="..\:/Users/mihir/AndroidStudioProjects/BusTime3/app/src/main/res/layout/activity_bus_timings.xml" value="0.128" />
         <entry key="..\:/Users/mihir/AndroidStudioProjects/BusTime3/app/src/main/res/layout/activity_main.xml" value="0.22790697674418606" />
         <entry key="..\:/Users/mihir/AndroidStudioProjects/BusTime3/app/src/main/res/layout/bus_item.xml" value="0.4" />
         <entry key="..\:/Users/mihir/AndroidStudioProjects/BusTime3/app/src/main/res/layout/bus_route_item.xml" value="0.4" />
@@ -21,6 +24,7 @@
         <entry key="..\:/Users/mihir/AndroidStudioProjects/BusTime3/app/src/main/res/layout/fragment_nearby.xml" value="0.264" />
         <entry key="..\:/Users/mihir/AndroidStudioProjects/BusTime3/app/src/main/res/layout/fragment_search.xml" value="0.264" />
         <entry key="..\:/Users/mihir/AndroidStudioProjects/BusTime3/app/src/main/res/menu/bottom_navigation_menu.xml" value="0.25" />
+        <entry key="..\:/Users/mihir/AndroidStudioProjects/BusTime3/app/src/main/res/menu/bus_route_menu.xml" value="0.11388888888888889" />
         <entry key="..\:/Users/mihir/AndroidStudioProjects/BusTime3/app/src/main/res/menu/bus_timings_menu.xml" value="0.2" />
         <entry key="..\:/Users/mihir/AndroidStudioProjects/BusTime3/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.26614583333333336" />
       </map>

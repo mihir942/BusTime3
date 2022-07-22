@@ -3,6 +3,7 @@ package com.pmapps.bustime3.searchpage;
 import static com.pmapps.bustime3.helper.HelperMethods.*;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -19,6 +20,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -30,6 +32,7 @@ import com.pmapps.bustime3.R;
 import com.pmapps.bustime3.database.AppDatabase;
 import com.pmapps.bustime3.database.RouteDao;
 import com.pmapps.bustime3.database.RouteModel;
+import com.pmapps.bustime3.favpage_nearbypage.bus.BusTimingsActivity;
 import com.pmapps.bustime3.searchpage.RoutesAdapter;
 
 import org.json.JSONArray;
@@ -81,7 +84,9 @@ public class SearchFragment extends Fragment {
         searchResultsListView = v.findViewById(R.id.search_results_listview);
 
         routeModelArrayList = new ArrayList<>();
-        routesAdapter = new RoutesAdapter(mContext, routeModelArrayList);
+        routesAdapter = new RoutesAdapter(mContext, routeModelArrayList, routeModel -> {
+            openBusRoute(routeModel);
+        });
         searchResultsListView.setAdapter(routesAdapter);
 
         // GET: gets the "cross button" component/child of the search view
@@ -251,6 +256,12 @@ public class SearchFragment extends Fragment {
             }
         });
         Volley.newRequestQueue(mContext).add(request);
+    }
+
+    private void openBusRoute(RouteModel routeModel) {
+        Intent intent = new Intent(mContext, BusRouteActivity.class);
+        intent.putExtra("BUS_ROUTE_NUM",routeModel.getBusNumber());
+        startActivity(intent);
     }
 
 }

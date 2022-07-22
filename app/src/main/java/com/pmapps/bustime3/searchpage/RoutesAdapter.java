@@ -17,8 +17,11 @@ import java.util.ArrayList;
 
 public class RoutesAdapter extends ArrayAdapter<RouteModel> {
 
-    public RoutesAdapter(@NonNull Context context, ArrayList<RouteModel> routeModelArrayList) {
+    private OnBusRouteClickListener mListener;
+
+    public RoutesAdapter(@NonNull Context context, ArrayList<RouteModel> routeModelArrayList, OnBusRouteClickListener listener) {
         super(context, 0, routeModelArrayList);
+        this.mListener = listener;
     }
 
     @NonNull
@@ -32,6 +35,8 @@ public class RoutesAdapter extends ArrayAdapter<RouteModel> {
 
         TextView bus_route_textview = (TextView) convertView.findViewById(R.id.bus_route_text_view_cardview);
         bus_route_textview.setText(routeModel.getBusNumber());
+
+        convertView.setOnClickListener(view -> mListener.onBusRouteClicked(routeModel));
 
         return convertView;
     }

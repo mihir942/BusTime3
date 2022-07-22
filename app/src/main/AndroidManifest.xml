@@ -19,9 +19,12 @@
         android:theme="@style/Theme.BusTime3"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".searchpage.BusRouteActivity"
+            android:exported="false" />
+        <activity
             android:name=".favpage_nearbypage.bus.BusTimingsActivity"
             android:exported="false"
-            android:screenOrientation="nosensor"/>
+            android:screenOrientation="nosensor" />
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
