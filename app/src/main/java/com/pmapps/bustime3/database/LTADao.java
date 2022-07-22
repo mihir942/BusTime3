@@ -27,6 +27,9 @@ public interface LTADao {
     @Query("SELECT name FROM tbl3_all_bus_stops WHERE code = :code")
     String getNameForCode(String code);
 
+    @Query("SELECT road FROM tbl3_all_bus_stops WHERE code = :code")
+    String getRoadForCode(String code);
+
     @Query("DELETE FROM tbl3_all_bus_stops")
     void clearAllStops();
 }

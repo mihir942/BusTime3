@@ -94,6 +94,8 @@ public class MainActivity extends AppCompatActivity {
                     e.printStackTrace();
                 }
             }
+        } else {
+            Log.d("DEBUG","rows already added");
         }
     }
 

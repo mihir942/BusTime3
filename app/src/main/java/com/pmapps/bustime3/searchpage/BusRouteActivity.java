@@ -1,5 +1,7 @@
 package com.pmapps.bustime3.searchpage;
 
+import static com.pmapps.bustime3.helper.HelperMethods.*;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
@@ -8,15 +10,27 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcel;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.pmapps.bustime3.R;
+import com.pmapps.bustime3.database.AppDatabase;
+import com.pmapps.bustime3.database.LTADao;
 import com.pmapps.bustime3.favpage_nearbypage.bus.BusTimingsActivity;
 import com.pmapps.bustime3.favpage_nearbypage.busstop.BusStopAdapter;
 import com.pmapps.bustime3.favpage_nearbypage.busstop.BusStopItem;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,9 +41,17 @@ public class BusRouteActivity extends AppCompatActivity {
     RecyclerView recyclerView;
     List<BusStopItem> busStopItemList1;
     List<BusStopItem> busStopItemList2;
+    List<BusStopItem> finalBusStopItemList;
     BusStopAdapter busStopAdapter;
 
     String busNumber;
+    boolean hasBothDirections = true;
+    int currentDirection = 1;
+
+    private final static String TIH_URL = "https://tih-api.stb.gov.sg/transport/v1/bus_route/service/";
+    private final static String ARRAY_NAME = "data";
+    private final static String BUS_STOP_STRING = "busStop";
+    private final static String DIRECTION_STRING = "direction";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +59,7 @@ public class BusRouteActivity extends AppCompatActivity {
         setContentView(R.layout.activity_bus_route);
 
         initialiseStuffs();
+        fetchBusRoute();
     }
 
     private void initialiseStuffs() {
@@ -48,11 +71,59 @@ public class BusRouteActivity extends AppCompatActivity {
         recyclerView = findViewById(R.id.bus_route_recycler_view);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
         busStopItemList1 = new ArrayList<>();
-        busStopAdapter = new BusStopAdapter(this,busStopItemList1,busStopItem -> {
+        busStopItemList2 = new ArrayList<>();
+        finalBusStopItemList = new ArrayList<>();
+
+        busStopAdapter = new BusStopAdapter(this,finalBusStopItemList,busStopItem -> {
             openBusStop(busStopItem);
         });
         recyclerView.setAdapter(busStopAdapter);
+    }
+
+    private void fetchBusRoute() {
+        LTADao ltaDao = AppDatabase.getInstance(getApplicationContext()).ltaDao();
+
+        String FINAL_URL = TIH_URL + busNumber + "?apikey=" + TIH_API_KEY(this);
+        JsonObjectRequest request = new JsonObjectRequest(FINAL_URL, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                try {
+                    JSONArray jsonArray = response.getJSONArray(ARRAY_NAME);
+                    for (int i = 0; i < jsonArray.length(); i++) {
+                        JSONObject busStopHit = jsonArray.getJSONObject(i);
+                        int direction = busStopHit.getInt(DIRECTION_STRING);
+
+                        String busStopCode = busStopHit.getString(BUS_STOP_STRING);
+                        String busStopName = ltaDao.getNameForCode(busStopCode);
+                        String busStopRoad = ltaDao.getRoadForCode(busStopCode);
+
+                        BusStopItem busStopItem = new BusStopItem(busStopName, busStopRoad, busStopCode);
+                        if (direction == 1) {
+                            busStopItemList1.add(busStopItem);
+                        } else if (direction == 2) {
+                            busStopItemList2.add(busStopItem);
+                        }
+                    }
+
+                    if (busStopItemList2.isEmpty()) {
+                        hasBothDirections = false;
+                    }
+
+                    showBusStops();
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                error.printStackTrace();
+            }
+        });
+        Volley.newRequestQueue(this).add(request);
     }
 
     private void openBusStop(BusStopItem busStopItem) {
@@ -80,7 +151,35 @@ public class BusRouteActivity extends AppCompatActivity {
         return false;
     }
 
+    private void showBusStops() {
+        finalBusStopItemList.clear();
+        if (currentDirection == 1) {
+            //show 1's bus stops
+            finalBusStopItemList.addAll(busStopItemList1);
+
+        } else if (currentDirection == 2) {
+            //show 2's bus stops
+            finalBusStopItemList.addAll(busStopItemList2);
+        }
+
+        busStopAdapter.notifyDataSetChanged();
+    }
+
     private void swapDirection() {
-        Toast.makeText(this,"direction swap",Toast.LENGTH_SHORT).show();
+
+        // if loop bus (only 1 dir)
+        if (!hasBothDirections) {
+            // don't do anything
+        } else {
+            // find current direction. swap.
+            if (currentDirection == 1) {
+                currentDirection = 2;
+                showBusStops();
+            } else if (currentDirection == 2) {
+                currentDirection = 1;
+                showBusStops();
+            }
+
+        }
     }
 }
