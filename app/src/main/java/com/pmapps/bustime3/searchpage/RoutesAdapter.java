@@ -33,7 +33,7 @@ public class RoutesAdapter extends ArrayAdapter<RouteModel> {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.bus_route_item, parent, false);
         }
 
-        TextView bus_route_textview = (TextView) convertView.findViewById(R.id.bus_route_text_view_cardview);
+        TextView bus_route_textview = convertView.findViewById(R.id.bus_route_text_view_cardview);
         bus_route_textview.setText(routeModel.getBusNumber());
 
         convertView.setOnClickListener(view -> mListener.onBusRouteClicked(routeModel));

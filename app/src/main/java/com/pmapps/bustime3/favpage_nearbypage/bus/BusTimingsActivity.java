@@ -8,6 +8,7 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.annotation.SuppressLint;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.Menu;
@@ -15,7 +16,6 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.android.volley.RequestQueue;
-import com.android.volley.Response;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.android.material.appbar.MaterialToolbar;
@@ -123,6 +123,7 @@ public class BusTimingsActivity extends AppCompatActivity {
         return false;
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     private void fetchTimings() {
 
         // clear existing data
@@ -134,7 +135,7 @@ public class BusTimingsActivity extends AppCompatActivity {
                 + busStopItem.getBusStopCode()
                 + "?apikey=" + TIH_API_KEY(this);
 
-        JsonObjectRequest request = new JsonObjectRequest(FINAL_URL, (Response.Listener<JSONObject>) response -> {
+        JsonObjectRequest request = new JsonObjectRequest(FINAL_URL, response -> {
             try {
                 JSONArray jsonArray = response.getJSONArray(ARRAY_NAME_STRING);
                 int limit = jsonArray.length();

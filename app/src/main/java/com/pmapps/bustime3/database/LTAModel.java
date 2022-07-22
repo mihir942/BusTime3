@@ -8,7 +8,7 @@ import androidx.room.PrimaryKey;
 @Entity(tableName = "tbl3_all_bus_stops")
 public class LTAModel {
 
-    public LTAModel(String busStopCode, String busStopName, String busStopRoad) {
+    public LTAModel(@NonNull String busStopCode, String busStopName, String busStopRoad) {
         this.busStopCode = busStopCode;
         this.busStopName = busStopName;
         this.busStopRoad = busStopRoad;
@@ -25,28 +25,17 @@ public class LTAModel {
     @ColumnInfo(name = "road")
     private String busStopRoad;
 
-    public String getBusStopRoad() {
-        return busStopRoad;
-    }
-
-    public void setBusStopRoad(String busStopRoad) {
-        this.busStopRoad = busStopRoad;
-    }
-
     @NonNull
     public String getBusStopCode() {
         return busStopCode;
-    }
-
-    public void setBusStopCode(@NonNull String busStopCode) {
-        this.busStopCode = busStopCode;
     }
 
     public String getBusStopName() {
         return busStopName;
     }
 
-    public void setBusStopName(String busStopName) {
-        this.busStopName = busStopName;
+    public String getBusStopRoad() {
+        return busStopRoad;
     }
+
 }

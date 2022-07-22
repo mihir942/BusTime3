@@ -8,16 +8,12 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Parcel;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Toast;
 
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.android.material.appbar.MaterialToolbar;
@@ -76,9 +72,7 @@ public class BusRouteActivity extends AppCompatActivity {
         busStopItemList2 = new ArrayList<>();
         finalBusStopItemList = new ArrayList<>();
 
-        busStopAdapter = new BusStopAdapter(this,finalBusStopItemList,busStopItem -> {
-            openBusStop(busStopItem);
-        });
+        busStopAdapter = new BusStopAdapter(this,finalBusStopItemList, this::openBusStop);
         recyclerView.setAdapter(busStopAdapter);
     }
 
@@ -86,43 +80,35 @@ public class BusRouteActivity extends AppCompatActivity {
         LTADao ltaDao = AppDatabase.getInstance(getApplicationContext()).ltaDao();
 
         String FINAL_URL = TIH_URL + busNumber + "?apikey=" + TIH_API_KEY(this);
-        JsonObjectRequest request = new JsonObjectRequest(FINAL_URL, new Response.Listener<JSONObject>() {
-            @Override
-            public void onResponse(JSONObject response) {
-                try {
-                    JSONArray jsonArray = response.getJSONArray(ARRAY_NAME);
-                    for (int i = 0; i < jsonArray.length(); i++) {
-                        JSONObject busStopHit = jsonArray.getJSONObject(i);
-                        int direction = busStopHit.getInt(DIRECTION_STRING);
+        JsonObjectRequest request = new JsonObjectRequest(FINAL_URL, response -> {
+            try {
+                JSONArray jsonArray = response.getJSONArray(ARRAY_NAME);
+                for (int i = 0; i < jsonArray.length(); i++) {
+                    JSONObject busStopHit = jsonArray.getJSONObject(i);
+                    int direction = busStopHit.getInt(DIRECTION_STRING);
 
-                        String busStopCode = busStopHit.getString(BUS_STOP_STRING);
-                        String busStopName = ltaDao.getNameForCode(busStopCode);
-                        String busStopRoad = ltaDao.getRoadForCode(busStopCode);
+                    String busStopCode = busStopHit.getString(BUS_STOP_STRING);
+                    String busStopName = ltaDao.getNameForCode(busStopCode);
+                    String busStopRoad = ltaDao.getRoadForCode(busStopCode);
 
-                        BusStopItem busStopItem = new BusStopItem(busStopName, busStopRoad, busStopCode);
-                        if (direction == 1) {
-                            busStopItemList1.add(busStopItem);
-                        } else if (direction == 2) {
-                            busStopItemList2.add(busStopItem);
-                        }
+                    BusStopItem busStopItem = new BusStopItem(busStopName, busStopRoad, busStopCode);
+                    if (direction == 1) {
+                        busStopItemList1.add(busStopItem);
+                    } else if (direction == 2) {
+                        busStopItemList2.add(busStopItem);
                     }
-
-                    if (busStopItemList2.isEmpty()) {
-                        hasBothDirections = false;
-                    }
-
-                    showBusStops();
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
                 }
+
+                if (busStopItemList2.isEmpty()) {
+                    hasBothDirections = false;
+                }
+
+                showBusStops();
+
+            } catch (JSONException e) {
+                e.printStackTrace();
             }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                error.printStackTrace();
-            }
-        });
+        }, Throwable::printStackTrace);
         Volley.newRequestQueue(this).add(request);
     }
 
@@ -151,6 +137,7 @@ public class BusRouteActivity extends AppCompatActivity {
         return false;
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     private void showBusStops() {
         finalBusStopItemList.clear();
         if (currentDirection == 1) {
@@ -166,12 +153,7 @@ public class BusRouteActivity extends AppCompatActivity {
     }
 
     private void swapDirection() {
-
-        // if loop bus (only 1 dir)
-        if (!hasBothDirections) {
-            // don't do anything
-        } else {
-            // find current direction. swap.
+        if (hasBothDirections) {
             if (currentDirection == 1) {
                 currentDirection = 2;
                 showBusStops();
@@ -179,7 +161,6 @@ public class BusRouteActivity extends AppCompatActivity {
                 currentDirection = 1;
                 showBusStops();
             }
-
         }
     }
 }

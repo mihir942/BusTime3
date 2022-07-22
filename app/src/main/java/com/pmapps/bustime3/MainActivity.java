@@ -9,7 +9,6 @@ import androidx.fragment.app.Fragment;
 import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
-import android.content.res.Resources;
 import android.os.Bundle;
 import android.util.Log;
 
@@ -29,8 +28,6 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -67,9 +64,6 @@ public class MainActivity extends AppCompatActivity {
         LTADao ltaDao = AppDatabase.getInstance(getApplicationContext()).ltaDao();
         if (ltaDao.getNumRows() == 0) {
             // insert all data
-
-            List<InputStream> inputStreamArrayList = new ArrayList<>();
-
             for (int i = 0; i <= 10; i++) {
                 int identifier = getResources().getIdentifier("response"+i, "raw", getPackageName());
                 InputStream inputStream = getResources().openRawResource(identifier);
@@ -94,8 +88,6 @@ public class MainActivity extends AppCompatActivity {
                     e.printStackTrace();
                 }
             }
-        } else {
-            Log.d("DEBUG","rows already added");
         }
     }
 

@@ -1,7 +1,6 @@
 package com.pmapps.bustime3.database;
 
 import androidx.room.Dao;
-import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
@@ -10,10 +9,6 @@ import java.util.List;
 
 @Dao
 public interface RouteDao {
-
-    // Select all data
-    @Query("SELECT * FROM tbl2_routes")
-    List<RouteModel> getAllData();
 
     // Select matching data
     @Query("SELECT * FROM TBL2_ROUTES WHERE bus_number LIKE '%' || :busNumber || '%' ORDER BY CASE WHEN bus_number LIKE :busNumber || '%' THEN 0 ELSE 1 END, bus_number LIMIT 7")

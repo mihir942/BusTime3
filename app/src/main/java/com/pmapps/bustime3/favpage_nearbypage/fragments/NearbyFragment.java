@@ -97,9 +97,7 @@ public class NearbyFragment extends Fragment implements OnMapReadyCallback, Goog
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(mContext));
         busStopItemList = new ArrayList<>();
-        busStopAdapter = new BusStopAdapter(mContext, busStopItemList, busStopItem -> {
-            openBusStop(busStopItem);
-        });
+        busStopAdapter = new BusStopAdapter(mContext, busStopItemList, this::openBusStop);
         recyclerView.setAdapter(busStopAdapter);
     }
 

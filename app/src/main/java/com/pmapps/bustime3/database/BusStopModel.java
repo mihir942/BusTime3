@@ -8,7 +8,7 @@ import androidx.room.PrimaryKey;
 @Entity(tableName = "tbl1_fav_bus_stops")
 public class BusStopModel {
 
-    public BusStopModel(String busStopCode, String busStopName, String busStopRoad) {
+    public BusStopModel(@NonNull String busStopCode, String busStopName, String busStopRoad) {
         this.busStopCode = busStopCode;
         this.busStopName = busStopName;
         this.busStopRoad = busStopRoad;
@@ -25,11 +25,12 @@ public class BusStopModel {
     @ColumnInfo(name = "road")
     private String busStopRoad;
 
+    @NonNull
     public String getBusStopCode() {
         return busStopCode;
     }
 
-    public void setBusStopCode(String busStopCode) {
+    public void setBusStopCode(@NonNull String busStopCode) {
         this.busStopCode = busStopCode;
     }
 
@@ -37,15 +38,7 @@ public class BusStopModel {
         return busStopName;
     }
 
-    public void setBusStopName(String busStopName) {
-        this.busStopName = busStopName;
-    }
-
     public String getBusStopRoad() {
         return busStopRoad;
-    }
-
-    public void setBusStopRoad(String busStopRoad) {
-        this.busStopRoad = busStopRoad;
     }
 }

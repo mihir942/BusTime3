@@ -1,5 +1,6 @@
 package com.pmapps.bustime3.favpage_nearbypage.fragments;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Canvas;
@@ -66,9 +67,7 @@ public class FavFragment extends Fragment {
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(mContext));
         busStopItemList = new ArrayList<>();
-        busStopAdapter = new BusStopAdapter(mContext, busStopItemList, busStopItem -> {
-            openBusStop(busStopItem);
-        });
+        busStopAdapter = new BusStopAdapter(mContext, busStopItemList, this::openBusStop);
         recyclerView.setAdapter(busStopAdapter);
         ItemTouchHelper helper = new ItemTouchHelper(itemTouchHelperCallback);
         helper.attachToRecyclerView(recyclerView);
@@ -80,12 +79,13 @@ public class FavFragment extends Fragment {
         startActivity(intent);
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     private void fetchBusStops() {
         busStopItemList.clear();
         BusStopDao dao = AppDatabase.getInstance(mContext.getApplicationContext()).busStopDao();
 
         for (BusStopModel model: dao.getAllData()) {
-            BusStopItem item = new BusStopItem(model.getBusStopName(), model.getBusStopRoad(), model.getBusStopCode());
+            BusStopItem item = new BusStopItem(model.getBusStopName(),model.getBusStopRoad(), model.getBusStopCode());
             busStopItemList.add(item);
         }
 

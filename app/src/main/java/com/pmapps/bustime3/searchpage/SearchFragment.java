@@ -20,10 +20,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.ProgressBar;
-import android.widget.Toast;
 
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.android.material.chip.Chip;
@@ -32,8 +29,6 @@ import com.pmapps.bustime3.R;
 import com.pmapps.bustime3.database.AppDatabase;
 import com.pmapps.bustime3.database.RouteDao;
 import com.pmapps.bustime3.database.RouteModel;
-import com.pmapps.bustime3.favpage_nearbypage.bus.BusTimingsActivity;
-import com.pmapps.bustime3.searchpage.RoutesAdapter;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -84,19 +79,17 @@ public class SearchFragment extends Fragment {
         searchResultsListView = v.findViewById(R.id.search_results_listview);
 
         routeModelArrayList = new ArrayList<>();
-        routesAdapter = new RoutesAdapter(mContext, routeModelArrayList, routeModel -> {
-            openBusRoute(routeModel);
-        });
+        routesAdapter = new RoutesAdapter(mContext, routeModelArrayList, this::openBusRoute);
         searchResultsListView.setAdapter(routesAdapter);
 
         // GET: gets the "cross button" component/child of the search view
-        AppCompatImageView imageView = (AppCompatImageView) searchView.findViewById(androidx.appcompat.R.id.search_close_btn);
+        AppCompatImageView imageView = searchView.findViewById(androidx.appcompat.R.id.search_close_btn);
 
         // SET: sets the image of the "cross button"
         imageView.setImageDrawable(ContextCompat.getDrawable(mContext,R.drawable.ic_searchview_cancel_icon));
 
         // GET: gets the edit text component/child of the searchview
-        EditText editText = (EditText) searchView.findViewById(androidx.appcompat.R.id.search_src_text);
+        EditText editText = searchView.findViewById(androidx.appcompat.R.id.search_src_text);
 
         // SET: sets text appearance as 12sp, white, circularstd font (light)
         editText.setTextAppearance(R.style.EditTextStyle);
@@ -111,7 +104,7 @@ public class SearchFragment extends Fragment {
             @Override
             public boolean onQueryTextSubmit(String query) {
                 Chip selectedChip = chipGroup.findViewById(chipGroup.getCheckedChipId());
-                if (Objects.equals((String) selectedChip.getTag(), "0")) {
+                if (Objects.equals(selectedChip.getTag(), "0")) {
                     progressBar.setVisibility(View.VISIBLE);
 
                     InputMethodManager imm = (InputMethodManager) mContext.getSystemService(Context.INPUT_METHOD_SERVICE);
@@ -119,11 +112,9 @@ public class SearchFragment extends Fragment {
                     routeDao.clearAllRoutes();
                     routesAdapter.clear();
                     serviceCall0(TIH_URL + OPERATORS[0] + "?apikey=" + TIH_API_KEY(mContext), query);
-                    return true;
                 } else {
-                    Log.d("MODEL","stops selected");
-                    return true;
                 }
+                return true;
             }
 
             @Override
@@ -134,127 +125,88 @@ public class SearchFragment extends Fragment {
     }
 
     private void serviceCall0(String url0, String query) {
-        JsonObjectRequest request = new JsonObjectRequest(url0, new Response.Listener<JSONObject>() {
-            @Override
-            public void onResponse(JSONObject response) {
+        JsonObjectRequest request = new JsonObjectRequest(url0, response -> {
 
-                try {
-                    JSONArray jsonArray = response.getJSONArray(ARRAY_NAME);
-                    for (int i = 0; i < jsonArray.length(); i++) {
-                        JSONObject busHit = jsonArray.getJSONObject(i);
-                        String busNumber = busHit.getString(BUSNUM_STRING);
-                        RouteModel model = new RouteModel(busNumber,OPERATORS[0]);
-                        routeDao.insertRoute(model);
-                    }
-                    // on response success of 0, call 1
-                    serviceCall1(TIH_URL + OPERATORS[1] + "?apikey=" + TIH_API_KEY(mContext), query);
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
+            try {
+                JSONArray jsonArray = response.getJSONArray(ARRAY_NAME);
+                for (int i = 0; i < jsonArray.length(); i++) {
+                    JSONObject busHit = jsonArray.getJSONObject(i);
+                    String busNumber = busHit.getString(BUSNUM_STRING);
+                    RouteModel model = new RouteModel(busNumber,OPERATORS[0]);
+                    routeDao.insertRoute(model);
                 }
+                // on response success of 0, call 1
+                serviceCall1(TIH_URL + OPERATORS[1] + "?apikey=" + TIH_API_KEY(mContext), query);
+
+            } catch (JSONException e) {
+                e.printStackTrace();
             }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                error.printStackTrace();
-            }
-        });
+        }, Throwable::printStackTrace);
         Volley.newRequestQueue(mContext).add(request);
     }
 
     private void serviceCall1(String url1, String query) {
-        JsonObjectRequest request = new JsonObjectRequest(url1, new Response.Listener<JSONObject>() {
-            @Override
-            public void onResponse(JSONObject response) {
+        JsonObjectRequest request = new JsonObjectRequest(url1, response -> {
 
-                try {
-                    JSONArray jsonArray = response.getJSONArray(ARRAY_NAME);
-                    for (int i = 0; i < jsonArray.length(); i++) {
-                        JSONObject busHit = jsonArray.getJSONObject(i);
-                        String busNumber = busHit.getString(BUSNUM_STRING);
-                        RouteModel model = new RouteModel(busNumber,OPERATORS[1]);
-                        routeDao.insertRoute(model);
-                    }
-                    // on response success of 1, call 2
-                    serviceCall2(TIH_URL + OPERATORS[2] + "?apikey=" + TIH_API_KEY(mContext), query);
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
+            try {
+                JSONArray jsonArray = response.getJSONArray(ARRAY_NAME);
+                for (int i = 0; i < jsonArray.length(); i++) {
+                    JSONObject busHit = jsonArray.getJSONObject(i);
+                    String busNumber = busHit.getString(BUSNUM_STRING);
+                    RouteModel model = new RouteModel(busNumber,OPERATORS[1]);
+                    routeDao.insertRoute(model);
                 }
+                // on response success of 1, call 2
+                serviceCall2(TIH_URL + OPERATORS[2] + "?apikey=" + TIH_API_KEY(mContext), query);
+
+            } catch (JSONException e) {
+                e.printStackTrace();
             }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                error.printStackTrace();
-            }
-        });
+        }, Throwable::printStackTrace);
         Volley.newRequestQueue(mContext).add(request);
     }
 
     private void serviceCall2(String url2, String query) {
-        JsonObjectRequest request = new JsonObjectRequest(url2, new Response.Listener<JSONObject>() {
-            @Override
-            public void onResponse(JSONObject response) {
+        JsonObjectRequest request = new JsonObjectRequest(url2, response -> {
 
-                try {
-                    JSONArray jsonArray = response.getJSONArray(ARRAY_NAME);
-                    for (int i = 0; i < jsonArray.length(); i++) {
-                        JSONObject busHit = jsonArray.getJSONObject(i);
-                        String busNumber = busHit.getString(BUSNUM_STRING);
-                        RouteModel model = new RouteModel(busNumber,OPERATORS[2]);
-                        routeDao.insertRoute(model);
-                    }
-                    // on response success of 2, call 3
-                    serviceCall3(TIH_URL + OPERATORS[3] + "?apikey=" + TIH_API_KEY(mContext), query);
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
+            try {
+                JSONArray jsonArray = response.getJSONArray(ARRAY_NAME);
+                for (int i = 0; i < jsonArray.length(); i++) {
+                    JSONObject busHit = jsonArray.getJSONObject(i);
+                    String busNumber = busHit.getString(BUSNUM_STRING);
+                    RouteModel model = new RouteModel(busNumber,OPERATORS[2]);
+                    routeDao.insertRoute(model);
                 }
+                // on response success of 2, call 3
+                serviceCall3(TIH_URL + OPERATORS[3] + "?apikey=" + TIH_API_KEY(mContext), query);
+
+            } catch (JSONException e) {
+                e.printStackTrace();
             }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                error.printStackTrace();
-            }
-        });
+        }, Throwable::printStackTrace);
         Volley.newRequestQueue(mContext).add(request);
     }
 
     private void serviceCall3(String url3, String query) {
-        JsonObjectRequest request = new JsonObjectRequest(url3, new Response.Listener<JSONObject>() {
-            @Override
-            public void onResponse(JSONObject response) {
+        JsonObjectRequest request = new JsonObjectRequest(url3, response -> {
 
-                try {
-                    JSONArray jsonArray = response.getJSONArray(ARRAY_NAME);
-                    for (int i = 0; i < jsonArray.length(); i++) {
-                        JSONObject busHit = jsonArray.getJSONObject(i);
-                        String busNumber = busHit.getString(BUSNUM_STRING);
-                        RouteModel model = new RouteModel(busNumber,OPERATORS[3]);
-                        routeDao.insertRoute(model);
-                    }
-                    // on response success of 3, get MATCHING DATA
-                    Log.d("SUCCESS","all 4 requests success!");
-
-                    routeModelArrayList = (ArrayList<RouteModel>) routeDao.getMatchingData(query);
-                    routesAdapter.addAll(routeModelArrayList);
-                    progressBar.setVisibility(View.GONE);
-
-//                    // TODO: debug statement
-//                    routeModelArrayList.forEach((RouteModel routemodel) -> {
-//                        Log.d("MODEL",routemodel.getBusNumber());
-//                    });
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
+            try {
+                JSONArray jsonArray = response.getJSONArray(ARRAY_NAME);
+                for (int i = 0; i < jsonArray.length(); i++) {
+                    JSONObject busHit = jsonArray.getJSONObject(i);
+                    String busNumber = busHit.getString(BUSNUM_STRING);
+                    RouteModel model = new RouteModel(busNumber,OPERATORS[3]);
+                    routeDao.insertRoute(model);
                 }
+                // on response success of 3, get MATCHING DATA
+                routeModelArrayList = (ArrayList<RouteModel>) routeDao.getMatchingData(query);
+                routesAdapter.addAll(routeModelArrayList);
+                progressBar.setVisibility(View.GONE);
+
+            } catch (JSONException e) {
+                e.printStackTrace();
             }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                error.printStackTrace();
-            }
-        });
+        }, Throwable::printStackTrace);
         Volley.newRequestQueue(mContext).add(request);
     }
 

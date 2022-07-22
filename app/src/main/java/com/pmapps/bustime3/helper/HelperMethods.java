@@ -90,8 +90,6 @@ public class HelperMethods {
     // Helper method #7
     public static Load loadForData(String data) {
         switch (data) {
-            case "SEA":
-                return Load.LIGHT;
             case "SDA":
                 return Load.MEDIUM;
             case "LSD":
@@ -104,8 +102,6 @@ public class HelperMethods {
     // Helper method #8
     public static Type typeForData(String data) {
         switch (data) {
-            case "SD":
-                return Type.SINGLE;
             case "DD":
                 return Type.DOUBLE;
             case "BD":
