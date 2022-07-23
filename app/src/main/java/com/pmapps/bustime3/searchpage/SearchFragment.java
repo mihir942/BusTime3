@@ -11,6 +11,8 @@ import androidx.appcompat.widget.AppCompatImageView;
 import androidx.appcompat.widget.SearchView;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -43,7 +45,8 @@ public class SearchFragment extends Fragment {
     private RouteDao routeDao;
     private RoutesAdapter routesAdapter;
     private ArrayList<RouteModel> routeModelArrayList;
-    private ListView searchResultsListView;
+
+    private RecyclerView searchResultsRecyclerView_ROUTES;
     private ProgressBar progressBar;
 
     private final static String[] OPERATORS = {"SBST","SMRT","GAS","TTS"};
@@ -76,11 +79,14 @@ public class SearchFragment extends Fragment {
         progressBar = v.findViewById(R.id.progress_bar);
         SearchView searchView = v.findViewById(R.id.search_view);
         ChipGroup chipGroup = v.findViewById(R.id.chip_group);
-        searchResultsListView = v.findViewById(R.id.search_results_listview);
+
+        searchResultsRecyclerView_ROUTES = v.findViewById(R.id.search_results_routes_recycler_view);
+        searchResultsRecyclerView_ROUTES.setHasFixedSize(true);
+        searchResultsRecyclerView_ROUTES.setLayoutManager(new LinearLayoutManager(mContext));
 
         routeModelArrayList = new ArrayList<>();
         routesAdapter = new RoutesAdapter(mContext, routeModelArrayList, this::openBusRoute);
-        searchResultsListView.setAdapter(routesAdapter);
+        searchResultsRecyclerView_ROUTES.setAdapter(routesAdapter);
 
         // GET: gets the "cross button" component/child of the search view
         AppCompatImageView imageView = searchView.findViewById(androidx.appcompat.R.id.search_close_btn);
@@ -109,8 +115,9 @@ public class SearchFragment extends Fragment {
 
                     InputMethodManager imm = (InputMethodManager) mContext.getSystemService(Context.INPUT_METHOD_SERVICE);
                     imm.hideSoftInputFromWindow(searchView.getWindowToken(),0);
+
                     routeDao.clearAllRoutes();
-                    routesAdapter.clear();
+                    routeModelArrayList.clear();
                     serviceCall0(TIH_URL + OPERATORS[0] + "?apikey=" + TIH_API_KEY(mContext), query);
                 } else {
                 }
@@ -199,9 +206,10 @@ public class SearchFragment extends Fragment {
                     routeDao.insertRoute(model);
                 }
                 // on response success of 3, get MATCHING DATA
-                routeModelArrayList = (ArrayList<RouteModel>) routeDao.getMatchingData(query);
-                routesAdapter.addAll(routeModelArrayList);
+                routeModelArrayList.addAll((ArrayList<RouteModel>) routeDao.getMatchingData(query));
                 progressBar.setVisibility(View.GONE);
+
+                routesAdapter.notifyDataSetChanged();
 
             } catch (JSONException e) {
                 e.printStackTrace();
