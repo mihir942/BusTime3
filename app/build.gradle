@@ -10,7 +10,7 @@ android {
     localProperties.load(new FileInputStream(rootProject.file("local.properties")))
 
     defaultConfig {
-        applicationId "com.pmapps.bustime3"
+        applicationId "com.pmapps.bustimesg"
         minSdk 26
         targetSdk 31
         versionCode 1
