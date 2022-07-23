@@ -5,6 +5,8 @@ import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 
+import java.util.List;
+
 @Dao
 public interface LTADao {
 
@@ -19,4 +21,8 @@ public interface LTADao {
 
     @Query("SELECT road FROM tbl3_all_bus_stops WHERE code = :code")
     String getRoadForCode(String code);
+
+    // Select matching data
+    @Query("SELECT * FROM tbl3_all_bus_stops WHERE name LIKE '%' || :busStopName || '%' ORDER BY CASE WHEN name LIKE :busStopName || '%' THEN 0 ELSE 1 END, name")
+    List<LTAModel> getMatchingData(String busStopName);
 }

@@ -29,26 +29,40 @@ import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
 import com.pmapps.bustime3.R;
 import com.pmapps.bustime3.database.AppDatabase;
+import com.pmapps.bustime3.database.LTADao;
+import com.pmapps.bustime3.database.LTAModel;
 import com.pmapps.bustime3.database.RouteDao;
 import com.pmapps.bustime3.database.RouteModel;
+import com.pmapps.bustime3.favpage_nearbypage.bus.BusTimingsActivity;
+import com.pmapps.bustime3.favpage_nearbypage.busstop.BusStopAdapter;
+import com.pmapps.bustime3.favpage_nearbypage.busstop.BusStopItem;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 public class SearchFragment extends Fragment {
 
     private Context mContext;
+    private ProgressBar progressBar;
+
+    // routes
     private RouteDao routeDao;
     private RoutesAdapter routesAdapter;
     private ArrayList<RouteModel> routeModelArrayList;
-
     private RecyclerView searchResultsRecyclerView_ROUTES;
-    private ProgressBar progressBar;
 
+    // stops
+    private LTADao ltaDao;
+    private BusStopAdapter busStopAdapter;
+    private ArrayList<BusStopItem> busStopItemArrayList;
+    private RecyclerView searchResultsRecyclerView_STOPS;
+
+    // constants
     private final static String[] OPERATORS = {"SBST","SMRT","GAS","TTS"};
     private final static String TIH_URL = "https://tih-api.stb.gov.sg/transport/v1/bus_service/operator/";
     private final static String ARRAY_NAME = "data";
@@ -73,20 +87,30 @@ public class SearchFragment extends Fragment {
 
     private void initialiseStuffs(View v) {
         //create database instance
-        routeDao = AppDatabase.getInstance(mContext.getApplicationContext()).routeDao();
+        AppDatabase db = AppDatabase.getInstance(mContext.getApplicationContext());
+        routeDao = db.routeDao();
+        ltaDao = db.ltaDao();
 
         //initialise views
         progressBar = v.findViewById(R.id.progress_bar);
         SearchView searchView = v.findViewById(R.id.search_view);
         ChipGroup chipGroup = v.findViewById(R.id.chip_group);
 
+        // search results for routes
         searchResultsRecyclerView_ROUTES = v.findViewById(R.id.search_results_routes_recycler_view);
         searchResultsRecyclerView_ROUTES.setHasFixedSize(true);
         searchResultsRecyclerView_ROUTES.setLayoutManager(new LinearLayoutManager(mContext));
-
         routeModelArrayList = new ArrayList<>();
         routesAdapter = new RoutesAdapter(mContext, routeModelArrayList, this::openBusRoute);
         searchResultsRecyclerView_ROUTES.setAdapter(routesAdapter);
+
+        // search results for stops
+        searchResultsRecyclerView_STOPS = v.findViewById(R.id.search_results_stops_recycler_view);
+        searchResultsRecyclerView_STOPS.setHasFixedSize(true);
+        searchResultsRecyclerView_STOPS.setLayoutManager(new LinearLayoutManager(mContext));
+        busStopItemArrayList = new ArrayList<>();
+        busStopAdapter = new BusStopAdapter(mContext, busStopItemArrayList, this::openBusStop);
+        searchResultsRecyclerView_STOPS.setAdapter(busStopAdapter);
 
         // GET: gets the "cross button" component/child of the search view
         AppCompatImageView imageView = searchView.findViewById(androidx.appcompat.R.id.search_close_btn);
@@ -112,6 +136,8 @@ public class SearchFragment extends Fragment {
                 Chip selectedChip = chipGroup.findViewById(chipGroup.getCheckedChipId());
                 if (Objects.equals(selectedChip.getTag(), "0")) {
                     progressBar.setVisibility(View.VISIBLE);
+                    searchResultsRecyclerView_ROUTES.setVisibility(View.GONE);
+                    searchResultsRecyclerView_STOPS.setVisibility(View.GONE);
 
                     InputMethodManager imm = (InputMethodManager) mContext.getSystemService(Context.INPUT_METHOD_SERVICE);
                     imm.hideSoftInputFromWindow(searchView.getWindowToken(),0);
@@ -119,7 +145,25 @@ public class SearchFragment extends Fragment {
                     routeDao.clearAllRoutes();
                     routeModelArrayList.clear();
                     serviceCall0(TIH_URL + OPERATORS[0] + "?apikey=" + TIH_API_KEY(mContext), query);
-                } else {
+                } else if (Objects.equals(selectedChip.getTag(),"1")) {
+                    progressBar.setVisibility(View.VISIBLE);
+                    searchResultsRecyclerView_ROUTES.setVisibility(View.GONE);
+                    searchResultsRecyclerView_STOPS.setVisibility(View.GONE);
+
+                    InputMethodManager imm = (InputMethodManager) mContext.getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(searchView.getWindowToken(),0);
+
+                    busStopItemArrayList.clear();
+
+                    // now, query for results, add to list
+                    for (LTAModel model: ltaDao.getMatchingData(query)) {
+                        BusStopItem busStopItem = new BusStopItem(model.getBusStopName(), model.getBusStopRoad(), model.getBusStopCode());
+                        busStopItemArrayList.add(busStopItem);
+                    }
+                    // once added,
+                    progressBar.setVisibility(View.GONE);
+                    searchResultsRecyclerView_STOPS.setVisibility(View.VISIBLE);
+                    busStopAdapter.notifyDataSetChanged();
                 }
                 return true;
             }
@@ -206,9 +250,10 @@ public class SearchFragment extends Fragment {
                     routeDao.insertRoute(model);
                 }
                 // on response success of 3, get MATCHING DATA
-                routeModelArrayList.addAll((ArrayList<RouteModel>) routeDao.getMatchingData(query));
                 progressBar.setVisibility(View.GONE);
+                searchResultsRecyclerView_ROUTES.setVisibility(View.VISIBLE);
 
+                routeModelArrayList.addAll((ArrayList<RouteModel>) routeDao.getMatchingData(query));
                 routesAdapter.notifyDataSetChanged();
 
             } catch (JSONException e) {
@@ -221,6 +266,12 @@ public class SearchFragment extends Fragment {
     private void openBusRoute(RouteModel routeModel) {
         Intent intent = new Intent(mContext, BusRouteActivity.class);
         intent.putExtra("BUS_ROUTE_NUM",routeModel.getBusNumber());
+        startActivity(intent);
+    }
+
+    private void openBusStop(BusStopItem busStopItem) {
+        Intent intent = new Intent(mContext, BusTimingsActivity.class);
+        intent.putExtra("BUS_STOP_ITEM",busStopItem);
         startActivity(intent);
     }
 
