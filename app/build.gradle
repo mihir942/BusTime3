@@ -15,15 +15,15 @@ android {
         targetSdk 31
         versionCode 1
         versionName "1.0"
-
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
     buildTypes {
         debug {
-            resValue("string","TIH_API_KEY",localProperties.getProperty("TIH_API_KEY"))
+
         }
         release {
+            resValue("string","TIH_API_KEY",localProperties.getProperty("TIH_API_KEY"))
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }

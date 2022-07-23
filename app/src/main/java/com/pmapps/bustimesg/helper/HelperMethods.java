@@ -5,12 +5,14 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
 import android.location.Location;
+import android.os.Build;
 
 import androidx.core.content.ContextCompat;
 
 import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.pmapps.bustimesg.BuildConfig;
 import com.pmapps.bustimesg.R;
 import com.pmapps.bustimesg.helper.enums.*;
 
@@ -27,7 +29,7 @@ public class HelperMethods {
 
     // Helper method #2
     public static String TIH_API_KEY(Context context) {
-        return context.getResources().getString(R.string.TIH_API_KEY);
+        return BuildConfig.TIH_API_KEY;
     }
 
     // Helper method #3
