@@ -10,7 +10,6 @@ import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.util.Log;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
@@ -55,7 +54,6 @@ public class MainActivity extends AppCompatActivity {
         contract = new ActivityResultContracts.RequestMultiplePermissions();
         launcher = registerForActivityResult(contract, result -> {
             if (result.containsValue(false)) {
-                Log.d("PERMISSIONS", "At least one of the permissions was not granted, launching again...");
                 launcher.launch(ALL_PERMISSIONS);
             }
         });
@@ -93,10 +91,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void askPermissions(ActivityResultLauncher<String[]> mLauncher) {
         if (!permissionsGranted(this)) {
-            Log.d("PERMISSIONS", "Launching multiple contract permission launcher for ALL required permissions");
             mLauncher.launch(ALL_PERMISSIONS);
-        } else {
-            Log.d("PERMISSIONS", "All permissions are already granted");
         }
     }
 
@@ -117,10 +112,8 @@ public class MainActivity extends AppCompatActivity {
     private boolean permissionsGranted(Context context) {
         for (String perm: ALL_PERMISSIONS) {
             if (ContextCompat.checkSelfPermission(context, perm) != PackageManager.PERMISSION_GRANTED) {
-                Log.d("PERMISSIONS", "Permission is not granted: " + perm);
                 return false;
             }
-            Log.d("PERMISSIONS", "Permission already granted: " + perm);
         }
         return true;
     }
